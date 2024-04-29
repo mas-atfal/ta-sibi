@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
+            name="viewport"
+        />
+        <!-- <meta name="csrf-token" content="" /> -->
+        <title>Admin - SI SIBI</title>
+
+        <!-- Include Partials Styles -->
+        {% include 'backend/layouts/partials/styles.html' %}
+    </head>
+
+    <body>
+        <div id="app">
+            <div class="main-wrapper">
+                <!-- Include Header -->
+                {% include 'backend/layouts/header.html' %}
+
+                <!-- Include Side Navigation -->
+                {% include 'backend/layouts/nav.html' %}
+
+                <!-- Main Content -->
+                <div class="main-content">
+                    <section class="section">
+                        <div class="section-header">
+                            <h1>{{ title }}</h1>
+                            <div class="section-header-breadcrumb">
+                                {% for title, link in sub_title.items() %}
+                                <div
+                                    class="breadcrumb-item {% if link != '#' %}active {% endif %}"
+                                >
+                                    {% if link != '#' %}
+                                    <a href="{{ url_for(link) }}"
+                                        >{{ title }}</a
+                                    >
+                                    {% else %}
+                                    <!-- Title -->
+                                    {{ title }}
+                                    <!-- End Title -->
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Block Content -->
+                        <div class="row">
+                            {% block content %} {% endblock %}
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Include Footer -->
+                {% include 'backend/layouts/footer.html' %}
+            </div>
+        </div>
+
+        <!-- Include Partials Scripts -->
+        {% include 'backend/layouts/partials/scripts.html' %}
+
+        <script type="text/javascript">
+            $("#logout").on("click", function (e) {
+                e.preventDefault();
+                url = $(this).data("url");
+                swal({
+                    title: "Apa anda yakin ?",
+                    text: "Anda akan keluar dari sistem e-counseling \nSMP NEGERI 3 PANGKAH",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((result) => {
+                    if (result) {
+                        swal("Logout!", "", "success");
+                        window.location = "/auth/logout";
+                    } else {
+                        swal({
+                            title: "Batal",
+                            text: "Batal logout",
+                            icon: "info",
+                            buttons: false,
+                            timer: 1000,
+                        });
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

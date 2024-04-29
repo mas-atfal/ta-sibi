@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
+            name="viewport"
+        />
+        <title>Sistem Informasi SIBI</title>
+
+        <!-- Include Partials Styles -->
+        {% include 'frontend/layouts/partials/styles.html' %}
+    </head>
+
+    <body class="layout-3">
+        <div id="app">
+            <div class="main-wrapper container">
+                <!-- Include Header -->
+                {% include 'frontend/layouts/header.html' %}
+
+                <!-- Include Navigation -->
+                {% include 'frontend/layouts/nav.html' %}
+
+                <!-- Main Content -->
+                <div class="main-content">
+                    <section class="section">
+                        <!-- <div class="section-header">
+                            <h1>{{ title }}</h1>
+                            <div class="section-header-breadcrumb">
+                                {% for title, link in sub_title.items() %}
+                                <div
+                                    class="breadcrumb-item {% if link != '#' %}active{% endif %}"
+                                >
+                                    {% if link != '#' %}
+                                        <a href="{{ url_for(link) }}"
+                                            >{{ title }}</a
+                                        >
+                                    {% else %}
+
+                                        {{ title }}
+
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div> -->
+
+                        {% block content %} {% endblock %}
+                    </section>
+                </div>
+
+                <!-- Include Footer -->
+                {% include 'frontend/layouts/footer.html' %}
+            </div>
+        </div>
+
+        <!-- Include Partials Scripts -->
+        {% include 'frontend/layouts/partials/scripts.html' %}
+    </body>
+</html>

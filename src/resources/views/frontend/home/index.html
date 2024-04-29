@@ -1,0 +1,36 @@
+{% extends 'frontend/layouts/app.html' %}
+
+<!-- Block Content -->
+{% block content %}
+
+<!-- Block Styles -->
+{% block styles %}
+
+<style>
+    .gallery.gallery-md .gallery-item {
+        width: 150px;
+        height: 150px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+</style>
+
+{% endblock %}
+
+<div class="section-body">
+    <!-- <h2 class="section-title">This is Example Page</h2>
+    <p class="section-lead">
+        This page is just an example for you to create your own page.
+    </p> -->
+
+    <!-- Welcome Card -->
+    {% include 'frontend/home/welcome-card.html' %}
+    <!-- Dictionary Card -->
+    {% include 'frontend/home/dictionary-card.html' %}
+    <!-- Learning Card -->
+    {% include 'frontend/home/learning-card.html' %}
+    <!-- Articles Card -->
+    {% include 'frontend/home/articles-card.html' %}
+</div>
+
+{% endblock %}

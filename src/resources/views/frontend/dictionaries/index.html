@@ -1,0 +1,98 @@
+{% extends 'frontend/layouts/app.html' %}
+
+<!-- Block Content -->
+{% block content %}
+
+<!-- Block Styles -->
+{% block styles %}
+
+<style>
+    .gallery.gallery-md .gallery-item {
+        width: 150px;
+        height: 150px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+</style>
+
+{% endblock %}
+
+<!-- Content -->
+<div class="section-body">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h4>Kamus Bahasa Isyarat</h4>
+                    <p>
+                        Temukan berbagai huruf abjad dalam bahasa isyarat
+                        tangan. Kamus kami mencakup huruf abjad yang dapat
+                        dipraktekan secara realtime dengan kecerdasan buatan
+                    </p>
+                </div>
+
+                <div class="col-md-12">
+                    <div
+                        class="gallery gallery-md"
+                        style="
+                            display: flex;
+                            flex-wrap: wrap;
+                            justify-content: center;
+                        "
+                    >
+                        <div
+                            class="gallery-item"
+                            data-image="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
+                            data-title="Image 1"
+                            href="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
+                            title="Image 1"
+                            style="background-image: url({{ url_for('static', filename='templates/img/example-image.jpg') }});"
+                        ></div>
+                        <div
+                            class="gallery-item"
+                            data-image="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
+                            data-title="Image 1"
+                            href="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
+                            title="Image 1"
+                            style="background-image: url({{ url_for('static', filename='templates/img/example-image.jpg') }});"
+                        ></div>
+                        <div
+                            class="gallery-item"
+                            data-image="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
+                            data-title="Image 1"
+                            href="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
+                            title="Image 1"
+                            style="background-image: url({{ url_for('static', filename='templates/img/example-image.jpg') }});"
+                        ></div>
+                        <div
+                            class="gallery-item"
+                            data-image="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
+                            data-title="Image 1"
+                            href="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
+                            title="Image 1"
+                            style="background-image: url({{ url_for('static', filename='templates/img/example-image.jpg') }});"
+                        ></div>
+                        <div
+                            class="gallery-item"
+                            data-image="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
+                            data-title="Image 1"
+                            href="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
+                            title="Image 1"
+                            style="background-image: url({{ url_for('static', filename='templates/img/example-image.jpg') }});"
+                        ></div>
+                        <div
+                            class="gallery-item"
+                            data-image="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
+                            data-title="Image 1"
+                            href="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
+                            title="Image 1"
+                            style="background-image: url({{ url_for('static', filename='templates/img/example-image.jpg') }});"
+                        ></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

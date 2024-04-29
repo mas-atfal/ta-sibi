@@ -1,0 +1,46 @@
+<!-- General JS Scripts -->
+<script src="{{ url_for('static', filename='templates/library/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/library/popper.js/dist/umd/popper.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/library/tooltip.js/dist/umd/tooltip.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/library/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/library/jquery.nicescroll/dist/jquery.nicescroll.min.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/library/moment/min/moment.min.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/js/stisla.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/js/dropify.js') }}"></script>
+
+<!-- JS Libraies -->
+<script src="{{ url_for('static', filename='templates/library/jquery-sparkline/jquery.sparkline.min.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/library/chart.js/dist/Chart.min.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/library/owl.carousel/dist/owl.carousel.min.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/library/summernote/dist/summernote-bs4.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/library/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/library/izitoast/dist/js/iziToast.min.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/library/sweetalert/dist/sweetalert.min.js') }}"></script>
+<!-- bs-custom-file-input -->
+<script src="{{ url_for('static', filename='templates/library/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+<!-- Template JS File -->
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+<script src="{{ url_for('static', filename='templates/library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/library/select2/dist/js/select2.full.min.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/library/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/library/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
+
+{% block scripts %} {% endblock %}
+
+<!-- Template JS File -->
+<script src="{{ url_for('static', filename='templates/js/scripts.js') }}"></script>
+<script src="{{ url_for('static', filename='templates/js/custom.js') }}"></script>
+
+<!-- Page Specific JS File -->
+<script src="{{ url_for('static', filename='templates/js/page/modules-toastr.js') }}"></script>
+
+<script>
+    $(document).ready(function () {
+        bsCustomFileInput.init();
+
+        $(".dropify").dropify();
+
+        $(".dataTable").dataTable();
+    });
+</script>

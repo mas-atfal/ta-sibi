@@ -1,0 +1,56 @@
+{% extends 'frontend/layouts/app.html' %}
+
+<!-- Block Content -->
+{% block content %}
+
+<!-- Content -->
+<div class="section-body">
+    <div class="card">
+        <div class="card-body">
+            <div class="row align">
+                <div class="col-md-12 text-center mb-3">
+                    <h3>Tentang Kami</h3>
+                </div>
+
+                <div class="col-md-6">
+                    <p>
+                        Kami adalah tim yang bersemangat dalam menghadirkan
+                        revolusi dalam pembelajaran bahasa isyarat tangan.
+                        Dengan memadukan keahlian kami dalam bahasa isyarat,
+                        teknologi, dan desain, kami bertekad untuk memperluas
+                        akses dan memperkaya pengalaman belajar bagi semua orang
+                        yang ingin menguasai bahasa isyarat tangan.
+                    </p>
+
+                    <p>
+                        Visi kami adalah menciptakan dunia di mana bahasa
+                        isyarat tangan dipahami, dihargai, dan diakses dengan
+                        mudah oleh semua individu. Kami percaya bahwa belajar
+                        bahasa isyarat tangan bukan hanya tentang komunikasi,
+                        tetapi juga tentang membuka pintu untuk pemahaman yang
+                        lebih dalam, kesetaraan, dan inklusivitas.
+                    </p>
+
+                    <p>
+                        Dengan komitmen kami terhadap inovasi, kualitas, dan
+                        inklusivitas, kami siap menjadi mitra Anda dalam
+                        perjalanan menuju pemahaman yang lebih baik tentang
+                        bahasa isyarat tangan dan budaya komunitas yang
+                        menggunakannya. Bersama, mari kita wujudkan dunia di
+                        mana setiap suara didengar, dan setiap isyarat dipahami.
+                    </p>
+                </div>
+
+                <div class="col-md-6 text-center">
+                    <img
+                        width="70%"
+                        src="{{ url_for('static', filename='home-1.svg') }}"
+                        alt=""
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

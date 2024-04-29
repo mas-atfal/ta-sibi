@@ -1,0 +1,47 @@
+<div class="main-sidebar">
+    <aside id="sidebar-wrapper">
+        <div class="sidebar-brand">
+            <a href="">SI SIBI</a>
+        </div>
+
+        <div class="sidebar-brand sidebar-brand-sm">
+            <a href="">SIBI</a>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li class="menu-header">Navigation Menu</li>
+            <li
+                class="{% if request.path == url_for('admin.index') %} active {% endif %}"
+            >
+                <a class="nav-link" href="{{ url_for('admin.index') }}">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li
+                class="{% if request.path == url_for('admin.articles.index') %} active {% endif %}"
+            >
+                <a
+                    class="nav-link"
+                    href="{{ url_for('admin.articles.index') }}"
+                >
+                    <i class="fas fa-list-alt"></i>
+                    <span>Artikel</span>
+                </a>
+            </li>
+
+            <li
+                class="{% if request.path == url_for('admin.dictionaries.index') %} active {% endif %}"
+            >
+                <a
+                    class="nav-link"
+                    href="{{ url_for('admin.dictionaries.index') }}"
+                >
+                    <i class="fas fa-file"></i>
+                    <span>Kamus SIBI</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+</div>
