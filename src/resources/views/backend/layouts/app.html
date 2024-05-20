@@ -61,6 +61,9 @@
         <!-- Include Partials Scripts -->
         {% include 'backend/layouts/partials/scripts.html' %}
 
+        <!-- Scripts Block -->
+        {% block scripts %} {% endblock %}
+
         <script type="text/javascript">
             $("#logout").on("click", function (e) {
                 e.preventDefault();

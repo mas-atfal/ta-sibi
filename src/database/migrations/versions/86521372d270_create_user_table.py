@@ -21,7 +21,17 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     op.create_table('users', 
         sa.Column('id', sa.BigInteger, primary_key=True),
-        sa.Column('name', sa.String, nullable=False),
+        sa.Column('name', sa.String(255), nullable=False),
+        sa.Column('email', sa.String(255), nullable=False),
+        sa.Column('phone', sa.CHAR(16), nullable=False),
+        sa.Column('email_verified_at', sa.DateTime(16), nullable=True),
+        sa.Column('password', sa.String(255), nullable=False),
+        sa.Column('remember_token', sa.String(255), nullable=True),
+        sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
+        sa.Column('updated_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
+        sa.Column('deleted_at', sa.DateTime(), nullable=True),
+        sa.PrimaryKeyConstraint('id', name=op.f('pk_users')),
+        sa.UniqueConstraint('email', name=op.f('uq_users_email'))
     )
 
 

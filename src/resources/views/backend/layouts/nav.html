@@ -11,7 +11,7 @@
         <ul class="sidebar-menu">
             <li class="menu-header">Navigation Menu</li>
             <li
-                class="{% if request.path == url_for('admin.index') %} active {% endif %}"
+                class="{{ 'active' if request.path.split('/')[2] == '' else '' }}"
             >
                 <a class="nav-link" href="{{ url_for('admin.index') }}">
                     <i class="fas fa-home"></i>
@@ -20,7 +20,7 @@
             </li>
 
             <li
-                class="{% if request.path == url_for('admin.articles.index') %} active {% endif %}"
+                class="{{ 'active' if request.path.split('/')[2] == 'articles' else '' }}"
             >
                 <a
                     class="nav-link"
@@ -32,7 +32,7 @@
             </li>
 
             <li
-                class="{% if request.path == url_for('admin.dictionaries.index') %} active {% endif %}"
+                class="{{ 'active' if request.path.split('/')[2] == 'dictionaries' else '' }}"
             >
                 <a
                     class="nav-link"

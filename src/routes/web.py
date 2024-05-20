@@ -68,6 +68,17 @@ def index():
 @bpAdminArticles.route("/")
 def index():
     return ArticleController.index()
+@bpAdminArticles.route("/json")
+def json():
+    session = g.session
+    users_list = ArticleController(session).json()
+    return [user.model_dump(mode="json") for user in users_list]
+@bpAdminArticles.route("/create")
+def create():
+    return ArticleController.create()
+@bpAdminArticles.route("/<int:id>/edit")
+def edit(id):
+    return ArticleController.edit(id)
 
 @bpAdminDictionaries.route("/")
 def index():

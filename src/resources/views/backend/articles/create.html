@@ -1,0 +1,110 @@
+{% extends 'backend/layouts/app.html' %}
+
+<!-- Block Content -->
+{% block content %}
+
+<!-- Content -->
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <button type="button" class="btn btn-dark" onclick="history.back()">
+                <i class="fa fa-arrow-circle-left me-0"></i> Kembali
+            </button>
+        </div>
+        <div class="card-body">
+            <form
+                action=""
+                method="POST"
+                enctype="multipart/form-data"
+                class="needs-validation"
+                novalidate
+            >
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="title">Judul</label>
+                            <input
+                                id="title"
+                                type="text"
+                                class="form-control"
+                                name="title"
+                                required
+                            />
+                            <div class="invalid-feedback">
+                                Please fill in your title
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="title">Kategori</label>
+                            <select
+                                id="category_id"
+                                name="category_id"
+                                class="form-control select2"
+                                required
+                            >
+                                <option value="" disabled selected>
+                                    -- Pilih Kategori --
+                                </option>
+
+                                <option value="1">Kategori 1</option>
+                            </select>
+
+                            <div class="invalid-feedback">
+                                Please fill in your category
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="title">Status</label>
+                            <select
+                                id="status"
+                                name="status"
+                                class="form-control select2"
+                                required
+                            >
+                                <option value="" disabled selected>
+                                    -- Pilih Status --
+                                </option>
+                                <option value="1">Published</option>
+                                <option value="2">Draft</option>
+                            </select>
+
+                            <div class="invalid-feedback">
+                                Please fill in your category
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="content">Konten</label>
+                            <textarea
+                                id="content"
+                                name="content"
+                                class="form-control summernote"
+                                required
+                            ></textarea>
+
+                            <div class="invalid-feedback">
+                                Please fill in your Content
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary">
+                            Simpan Artikel
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
