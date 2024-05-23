@@ -1,4 +1,4 @@
-from flask import Blueprint, g
+from flask import Blueprint, g, request
 
 from src.app.Http.Controllers.Frontend.HomeController import HomeController as FrontendHomeController
 from src.app.Http.Controllers.Frontend.DictionaryController import DictionaryController as FrontendDictionaryController
@@ -45,7 +45,8 @@ def index():
     return FrontendLearningController.index()
 
 @bpWebLearning.route("/predict")
-def index():
+def predict():
+    print(request.form.get('photo'))
     return FrontendLearningController.predict()
 
 @bpWebArticle.route("/")
