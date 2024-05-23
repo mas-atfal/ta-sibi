@@ -12,6 +12,7 @@
     <video id="videoElement" autoplay></video>
     <button id="startButton">Start Webcam</button>
     <button id="captureButton">Capture Photo</button>
+    <button id="predictButton">Predict Photo</button>
     <canvas id="canvasElement" style="display: none;"></canvas>
     <img id="photoElement" style="display: none;">
 
@@ -24,6 +25,8 @@
     const photoElement = document.getElementById('photoElement');
     const startButton = document.getElementById('startButton');
     const captureButton = document.getElementById('captureButton');
+    const predictButton = document.getElementById('predictButton');
+    var predictedHandSign = ""
 
     let stream;
 
@@ -47,8 +50,33 @@
         const photoDataUrl = canvasElement.toDataURL('image/jpeg');
         photoElement.src = photoDataUrl;
         photoElement.style.display = 'block';
+        return photoDataUrl
+    }
+
+    async function sendPhoto() {
+        let formData = new FormData();
+        formData.append("photo", capturePhoto())
+        const response = await fetch("/learning/predict", {
+            method: "POST",
+            body: formData,
+        });
+        resp = await response.json()
+        console.log(await response.json());
+        return resp
+    }
+
+    function predictHandSign() {
+        try {
+            setTimeout(async () => {
+                resp = await sendPhoto()
+                if (resp.predicted) predictedHandSign()
+            }, 1500);
+        } catch (error) {
+            console.error();
+        }
     }
 
     captureButton.addEventListener('click', capturePhoto);
+    predictButton.addEventListener('click', predictHandSign);
 </script>
 </html>
