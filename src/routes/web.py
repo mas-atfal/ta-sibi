@@ -44,6 +44,10 @@ def index():
 def index():
     return FrontendLearningController.index()
 
+@bpWebLearning.route("/predict")
+def index():
+    return FrontendLearningController.predict()
+
 @bpWebArticle.route("/")
 def index():
     return FrontendArticleController.index()
