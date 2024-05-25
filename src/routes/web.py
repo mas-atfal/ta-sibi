@@ -44,9 +44,8 @@ def index():
 def index():
     return FrontendLearningController.index()
 
-@bpWebLearning.route("/predict")
+@bpWebLearning.route("/predict", methods=['POST'])
 def predict():
-    print(request.form.get('photo'))
     return FrontendLearningController.predict()
 
 @bpWebArticle.route("/")
