@@ -119,7 +119,7 @@ class LearningController(Controller):
     def predict():
         if request.form.get("photo"):
             hs = HandSignModel()
-            hs.data_uri_to_cv2_img()
+            hs.data_uri_to_cv2_img(request.form.get("photo"))
             predicted_alphabet, confidence = hs.detect_hand_sign()
         response = {
             "success": False,
@@ -131,7 +131,9 @@ class LearningController(Controller):
             response['alphabet'] = predicted_alphabet
             response['predicted'] = True
             response['success'] = True
-        print(request.form.get('photo'))
+        else:
+            response['predicted'] = False
+            response['success'] = True
         return jsonify(response)
 
 
