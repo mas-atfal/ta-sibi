@@ -1,7 +1,6 @@
 from flask import Flask, g
 from sqlalchemy.orm.session import sessionmaker
 
-
 class DatabaseMiddleware:
     def __init__(self, session_maker: sessionmaker):
         self.session_maker = session_maker

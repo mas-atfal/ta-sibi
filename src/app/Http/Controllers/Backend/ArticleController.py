@@ -1,12 +1,7 @@
 from flask import render_template
-from pydantic import TypeAdapter
-from src.app.Http.Controllers.Controller import Controller
-from src.app.Models.User import User as UserModel
-from src.app.Schemas.UserSchema import User as UserSchema
+from ..Controller import Controller
 
-from sqlalchemy import select
-
-class ArticleController(Controller[UserModel]):
+class ArticleController(Controller):
     def index():
         title = "Artikel"
         sub_title = {
@@ -15,11 +10,6 @@ class ArticleController(Controller[UserModel]):
         }
         
         return render_template("backend/articles/index.html", title=title, sub_title=sub_title)
-    
-    def json(self) -> list[UserSchema]:
-        stmt = select(UserModel)
-        result = self.session.scalars(stmt.order_by(UserModel.id)).fetchall()
-        return TypeAdapter(list[UserSchema]).validate_python(result)
         
     def create():
         title = "Tambah Artikel"

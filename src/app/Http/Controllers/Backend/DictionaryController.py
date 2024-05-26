@@ -1,5 +1,5 @@
 from flask import render_template
-from src.app.Http.Controllers.Controller import Controller
+from ..Controller import Controller
 
 class DictionaryController(Controller):
     def index():

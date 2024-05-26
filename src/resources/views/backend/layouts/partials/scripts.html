@@ -15,7 +15,8 @@
 <script src="{{ url_for('static', filename='templates/library/summernote/dist/summernote-bs4.js') }}"></script>
 <script src="{{ url_for('static', filename='templates/library/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
 <script src="{{ url_for('static', filename='templates/library/izitoast/dist/js/iziToast.min.js') }}"></script>
-<script src="{{ url_for('static', filename='templates/library/sweetalert/dist/sweetalert.min.js') }}"></script>
+<!-- <script src="{{ url_for('static', filename='templates/library/sweetalert/dist/sweetalert.min.js') }}"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.0/dist/sweetalert2.all.min.js"></script>
 <!-- bs-custom-file-input -->
 <script src="{{ url_for('static', filename='templates/library/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
 <!-- Template JS File -->
@@ -36,7 +37,6 @@
 <script>
     $(document).ready(function () {
         bsCustomFileInput.init();
-
         $(".dropify").dropify();
 
         // $(".dataTable").dataTable();

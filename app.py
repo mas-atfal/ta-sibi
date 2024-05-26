@@ -3,14 +3,20 @@ import os
 
 from src import routes
 from src.app.Http import Middleware
-from src.config.database import create_session_maker
+from src.config.database import db
 
 def main() -> Flask:
     app = Flask(__name__, template_folder="src/resources/views", static_url_path="/static", static_folder="public")
+    
     app.secret_key = os.getenv("SECRET_KEY")
-    session_maker = create_session_maker(os.getenv("DATABASE_URL"))
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+    
+    # session_maker = create_session_maker(os.getenv("DATABASE_URL"))
+    # Middleware.register(app, session_maker)
+    
+    db.init_app(app)
     routes.register(app)
-    Middleware.register(app, session_maker)
     
     return app
 

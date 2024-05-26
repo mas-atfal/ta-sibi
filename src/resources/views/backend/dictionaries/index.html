@@ -7,7 +7,12 @@
 <div class="col-12">
     <div class="card">
         <div class="card-header">
-            <button type="button" class="btn btn-primary">
+            <button
+                type="button"
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#addDictionaryModal"
+            >
                 <i class="fa fa-plus-circle me-0"></i> Tambah {{ title }}
             </button>
         </div>
@@ -20,10 +25,8 @@
                 >
                     <thead>
                         <th width="30">No</th>
-                        <th width="100">Thumbnail</th>
-                        <th width="150">Judul</th>
-                        <th>Kategori</th>
-                        <th>Status</th>
+                        <th width="100">Gambar</th>
+                        <th width="150">Nama</th>
                         <th width="150">Action</th>
                     </thead>
                 </table>
@@ -31,16 +34,19 @@
         </div>
     </div>
 </div>
+<!-- End Content -->
+{% endblock %}
 
 <!-- Scripts -->
 {% block scripts %}
+
+<!-- Modal -->
+{% include 'backend/dictionaries/m_dictionary.html' %}
+
 <script>
     $(document).ready(function () {
         $("#dictionaries").DataTable();
     });
 </script>
 
-{% endblock %}
-
-<!-- End Content -->
 {% endblock %}

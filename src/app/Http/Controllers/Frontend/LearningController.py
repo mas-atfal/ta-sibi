@@ -14,8 +14,7 @@ import math
 class HandSignModel():
     def __init__(self, model_path: str = 'smnist.h5'):
         self.img_counter = 0
-        self.letterpred = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L',
-                    'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y']
+        self.letterpred = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L','M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y']
         self.model = load_model(model_path)
         self.mphands = mp.solutions.hands
         self.hands = self.mphands.Hands()
@@ -94,8 +93,6 @@ class HandSignModel():
                 print('Confidence 3: ', 100*value)
 
 class LearningController(Controller):
-    
-
     def index():
         title = "Home"
         sub_title = {
