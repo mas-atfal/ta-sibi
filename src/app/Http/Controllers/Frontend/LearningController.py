@@ -1,8 +1,9 @@
 import pandas as pd
+import base64
 import time
 from keras.models import load_model
 import mediapipe as mp
-from flask import render_template
+from flask import render_template, request, jsonify
 from src.app.Http.Controllers.Controller import Controller
 import cv2
 from cvzone.HandTrackingModule import HandDetector
@@ -14,16 +15,27 @@ import math
 class HandSignModel():
     def __init__(self, model_path: str = 'smnist.h5'):
         self.img_counter = 0
-        self.letterpred = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L','M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y']
+        self.img = None
+        self.letterpred = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L',
+                    'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y']
         self.model = load_model(model_path)
         self.mphands = mp.solutions.hands
         self.hands = self.mphands.Hands()
         self.mp_drawing = mp.solutions.drawing_utils
 
-    def image_to_array_frame(img):
-        return cv2.imread(img)
+    def data_uri_to_cv2_img(self, uri):
+        encoded_data = uri.split(',')[1]
+        nparr = np.frombuffer(base64.b64decode(encoded_data), np.uint8)
+        # old (python 2 version):
+        # nparr = np.fromstring(encoded_data.decode('base64'), np.uint8)
 
-    def detect_hand_sign(self, frame):
+        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        self.img = img
+        return img
+
+    def detect_hand_sign(self, frame = None):
+        if frame is None:
+            frame = self.img
         h, w, c = frame.shape
         analysisframe = frame
         showframe = analysisframe
@@ -91,8 +103,11 @@ class HandSignModel():
             elif value == high3:
                 print("Predicted Character 3: ", key)
                 print('Confidence 3: ', 100*value)
+        return None, None
 
 class LearningController(Controller):
+    global request
+
     def index():
         title = "Home"
         sub_title = {
@@ -100,6 +115,26 @@ class LearningController(Controller):
             "Learning": "#"
         }
         return render_template("frontend/learning/index.html", title=title, sub_title=sub_title)
+    
+    def predict():
+        if request.form.get("photo"):
+            hs = HandSignModel()
+            hs.data_uri_to_cv2_img(request.form.get("photo"))
+            predicted_alphabet, confidence = hs.detect_hand_sign()
+        response = {
+            "success": False,
+            "message": "",
+            "predicted": False,
+            "alphabet": ""
+        }
+        if predicted_alphabet:
+            response['alphabet'] = predicted_alphabet
+            response['predicted'] = True
+            response['success'] = True
+        else:
+            response['predicted'] = False
+            response['success'] = True
+        return jsonify(response)
 
 
 class VideoStreaming(object):

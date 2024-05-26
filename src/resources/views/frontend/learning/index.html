@@ -9,9 +9,15 @@
 
 <body>
     <h1>Webcam Capture</h1>
-    <video id="videoElement" autoplay></video>
+    <span>
+        <video id="videoElement" autoplay></video>
+        <h3 id="statusDisplay"></h3>
+        <h3 id="predictionDisplay"></h3>
+    </span>
     <button id="startButton">Start Webcam</button>
     <button id="captureButton">Capture Photo</button>
+    <button id="predictButton">Predict Photo</button>
+    
     <canvas id="canvasElement" style="display: none;"></canvas>
     <img id="photoElement" style="display: none;">
 
@@ -22,10 +28,19 @@
     const videoElement = document.getElementById('videoElement');
     const canvasElement = document.getElementById('canvasElement');
     const photoElement = document.getElementById('photoElement');
+    const statusDisplayElement = document.getElementById('statusDisplay');
+    const predictionDisplayElement = document.getElementById('predictionDisplay');
     const startButton = document.getElementById('startButton');
     const captureButton = document.getElementById('captureButton');
+    const predictButton = document.getElementById('predictButton');
+    var predictedHandSign = ""
+    var misPredict = 0
 
     let stream;
+
+    function appendText(e, s) {
+        e.innerHTML += s
+    }
 
     async function startWebcam() {
         try {
@@ -47,8 +62,51 @@
         const photoDataUrl = canvasElement.toDataURL('image/jpeg');
         photoElement.src = photoDataUrl;
         photoElement.style.display = 'block';
+        return photoDataUrl
+    }
+
+    async function sendPhoto() {
+        let formData = new FormData();
+        formData.append("photo", capturePhoto())
+        statusDisplayElement.innerHTML = "sending"
+        const response = await fetch("/learning/predict", {
+            method: "POST",
+            body: formData,
+        });
+        resp = await response.json()
+        return resp
+    }
+
+    function predictHandSign() {
+        resp = sendPhoto()
+        resp.then((result) => {
+            statusDisplayElement.innerHTML = "result"
+            if (result.predicted) {
+                appendText(predictionDisplayElement, result.alphabet)
+                setTimeout(() => {
+                    statusDisplayElement.innerHTML = "capturing"
+                    predictHandSign()
+                }, 2000);
+            } else {
+                misPredict++;
+            }
+            if (misPredict > 2) {
+                predictionDisplayElement += '<br>'
+                misPredict = 0
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
+        
+    }
+
+    function semiRealTimeRequest() {
+        setInterval(() => {
+            predictHandSign()
+        }, 3000);
     }
 
     captureButton.addEventListener('click', capturePhoto);
+    predictButton.addEventListener('click', predictHandSign);
 </script>
 </html>
