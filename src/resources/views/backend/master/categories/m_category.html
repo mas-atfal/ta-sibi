@@ -1,3 +1,4 @@
+<!-- Add Category Modal -->
 <div
     class="modal fade"
     tabindex="-1"
@@ -18,37 +19,82 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <form action="" method="post" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name">Nama</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="name"
-                            id="name"
-                            placeholder="Masukan Nama Kategori"
-                        />
-                    </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">Nama</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="name"
+                        id="name"
+                        placeholder="Masukan Nama Kategori"
+                    />
                 </div>
+            </div>
 
-                <div class="modal-footer">
-                    <button
-                        type="button"
-                        class="btn btn-dark"
-                        data-dismiss="modal"
-                    >
-                        Close
-                    </button>
-                    <button
-                        type="submit"
-                        id="btnSubmitCategory"
-                        class="btn btn-primary"
-                    >
-                        <i class="fa fa-save"></i> Simpan Data
-                    </button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-dismiss="modal">
+                    Close
+                </button>
+                <button
+                    type="submit"
+                    id="btnSubmitCategory"
+                    class="btn btn-primary"
+                >
+                    <i class="fa fa-save"></i> Simpan Data
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Category Modal -->
+<div
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    id="editCategoryModal"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Edit {{ title }}</h5>
+                <button
+                    type="button"
+                    class="close text-white"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                >
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">Nama</label>
+                    <input type="hidden" id="updateId" />
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="name"
+                        id="nameEdit"
+                        placeholder="Masukan Nama Kategori"
+                    />
                 </div>
-            </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-dismiss="modal">
+                    Close
+                </button>
+                <button
+                    type="submit"
+                    id="btnEditCategory"
+                    class="btn btn-success"
+                >
+                    <i class="fa fa-save"></i> Simpan Data
+                </button>
+            </div>
         </div>
     </div>
 </div>

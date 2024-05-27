@@ -1,4 +1,4 @@
-from flask import Blueprint, g, request
+from flask import Blueprint
 
 from ..app.Http.Controllers.Frontend.HomeController import HomeController as FrontendHomeController
 from ..app.Http.Controllers.Frontend.DictionaryController import DictionaryController as FrontendDictionaryController
@@ -69,11 +69,12 @@ def login():
     return AuthController.doLogin()
 
 # Blueprint Backend
-@bpAdmin.route("/")
+@bpAdmin.route("/", methods=["GET"])
 def index():
     return HomeController.index()
 
-@bpAdminCategories.route("/")
+# Admin Categories Routes
+@bpAdminCategories.route("/", methods=["GET"])
 def index():
     return CategoryController.index()
 
@@ -81,17 +82,47 @@ def index():
 def store():
     return CategoryController.store()
 
-@bpAdminArticles.route("/")
+@bpAdminCategories.route("/show/<int:id>", methods=["GET"])
+def show(id):
+    return CategoryController.show(id)
+
+@bpAdminCategories.route("/update/<int:id>", methods=["PATCH"])
+def update(id):
+    return CategoryController.update(id)
+
+@bpAdminCategories.route("/destroy/<int:id>", methods=["DELETE"])
+def destroy(id):
+    return CategoryController.destroy(id)
+
+# Admin Articles Routes
+@bpAdminArticles.route("/", methods=["GET"])
 def index():
     return ArticleController.index()
-@bpAdminArticles.route("/create")
+@bpAdminArticles.route("/create", methods=["GET"])
 def create():
     return ArticleController.create()
-@bpAdminArticles.route("/<int:id>/edit")
+@bpAdminArticles.route("/<int:id>/edit", methods=["GET"])
 def edit(id):
     return ArticleController.edit(id)
 
-@bpAdminDictionaries.route("/")
+# Admin Dictionaries Routes
+@bpAdminDictionaries.route("/", methods=["GET"])
 def index():
     return DictionaryController.index()
+
+@bpAdminDictionaries.route("/store", methods=["POST"])
+def store():
+    return DictionaryController.store()
+
+@bpAdminDictionaries.route("/show/<int:id>", methods=["GET"])
+def show(id):
+    return DictionaryController.show(id)
+
+@bpAdminDictionaries.route("/update/<int:id>", methods=["PATCH"])
+def update(id):
+    return DictionaryController.update(id)
+
+@bpAdminDictionaries.route("/destroy/<int:id>", methods=["DELETE"])
+def destroy(id):
+    return DictionaryController.destroy(id)
 

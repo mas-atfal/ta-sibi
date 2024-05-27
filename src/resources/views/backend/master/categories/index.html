@@ -35,11 +35,22 @@
                             <td>{{ loop.index }}</td>
                             <td>{{ category.name }}</td>
                             <td class="text-center">
-                                <button href="" class="btn btn-success btn-sm">
+                                <button
+                                    type="button"
+                                    data-id="{{ category.id }}"
+                                    class="btn btn-success btn-sm"
+                                    data-toggle="modal"
+                                    data-target="#editCategoryModal"
+                                >
                                     <i class="fa fa-edit me-0"></i> Edit
                                 </button>
 
-                                <button href="" class="btn btn-danger btn-sm">
+                                <button
+                                    type="button"
+                                    class="btn btn-danger btn-sm btnDeleteCategory"
+                                    data-name="{{ category.name }}"
+                                    data-id="{{ category.id }}"
+                                >
                                     <i class="fa fa-trash me-0"></i> Hapus
                                 </button>
                             </td>
@@ -88,6 +99,89 @@
                         console.log(res.message);
                     }
                 },
+            });
+        });
+
+        $("#editCategoryModal").on("show.bs.modal", function (e) {
+            var id = $(e.relatedTarget).data("id");
+            var url = "show/" + id;
+
+            $.get(url, function (res) {
+                if (res.status) {
+                    $("#updateId").val(res.data.id);
+                    $("#nameEdit").val(res.data.name);
+                }
+            });
+        });
+
+        $("#btnEditCategory").click(function (e) {
+            e.preventDefault();
+            $(this).attr("disabled", true);
+            var id = $("#updateId").val();
+
+            $.ajax({
+                url: "update/" + id,
+                type: "PATCH",
+                data: {
+                    name: $("#nameEdit").val(),
+                },
+                success: function (response) {
+                    if (response.status) {
+                        $("#editCategoryModal").modal("hide");
+                        Swal.fire("Success", response.message, "success").then(
+                            () => {
+                                location.reload();
+                            }
+                        );
+                    } else {
+                        Swal.fire("failed", res.message, "error");
+                        console.log(res.message);
+                    }
+                },
+            });
+        });
+
+        $(".btnDeleteCategory").click(function (e) {
+            e.preventDefault();
+            var id = $(this).data("id");
+            var name = $(this).data("name");
+            var url = "destroy/" + id;
+
+            Swal.fire({
+                title: "Apa anda yakin ?",
+                text: "Anda akan menghapus kategori " + name + " ini",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: "DELETE",
+                        success: function (response) {
+                            if (response.status) {
+                                Swal.fire(
+                                    "Success",
+                                    response.message,
+                                    "success"
+                                ).then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire("failed", res.message, "error");
+                                console.log(res.message);
+                            }
+                        },
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Cancelled",
+                        text: "Kategori Anda tidak dihapus :)",
+                        icon: "error",
+                    });
+                }
             });
         });
     });

@@ -1,5 +1,7 @@
 from flask import render_template
 from ..Controller import Controller
+from ....Models.Category import Category
+from ....Models.Article import Article
 
 class ArticleController(Controller):
     def index():

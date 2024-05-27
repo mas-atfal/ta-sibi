@@ -1,12 +1,12 @@
-from sqlalchemy.orm import Mapped, mapped_column
-from .BaseModel import CreatedUpdatedAtMixin
+from ...config.database import db
+from .BaseModel import BaseModel
 
-class User(CreatedUpdatedAtMixin):
+class User(BaseModel):
     __tablename__ = 'users'
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(nullable=False)
-    email: Mapped[str] = mapped_column(nullable=False)
-    phone: Mapped[str] = mapped_column(nullable=False)
+    
+    title = db.Column(db.String(255), nullable=False)
+    slug_title = db.Column(db.String(255), nullable=False)
+    content = db.Column(db.Text(), nullable=False)
     # password: Mapped[str] = mapped_column(nullable=False)
     
     #constructor

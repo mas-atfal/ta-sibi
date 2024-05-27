@@ -12,8 +12,7 @@ def main() -> Flask:
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
     
-    # session_maker = create_session_maker(os.getenv("DATABASE_URL"))
-    # Middleware.register(app, session_maker)
+    app.config['UPLOAD_FOLDER'] = 'public/storage'
     
     db.init_app(app)
     routes.register(app)
