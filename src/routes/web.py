@@ -51,9 +51,13 @@ def index():
 def predict():
     return FrontendLearningController.predict()
 
-@bpWebArticle.route("/")
+@bpWebArticle.route("/", methods=["GET"])
 def index():
     return FrontendArticleController.index()
+
+@bpWebArticle.route("/<string:slug>", methods=["GET"])
+def show(slug):
+    return FrontendArticleController.show(slug)
 
 @bpWebAbout.route("/")
 def index():
@@ -98,12 +102,26 @@ def destroy(id):
 @bpAdminArticles.route("/", methods=["GET"])
 def index():
     return ArticleController.index()
+
 @bpAdminArticles.route("/create", methods=["GET"])
 def create():
     return ArticleController.create()
+
+@bpAdminArticles.route("/store", methods=["POST"])
+def store():
+    return ArticleController.store()
+
 @bpAdminArticles.route("/<int:id>/edit", methods=["GET"])
 def edit(id):
     return ArticleController.edit(id)
+
+@bpAdminArticles.route("/<int:id>/update", methods=["PATCH"])
+def update(id):
+    return ArticleController.update(id)
+
+@bpAdminArticles.route("/destroy/<int:id>", methods=["DELETE"])
+def destroy(id):
+    return ArticleController.destroy(id)
 
 # Admin Dictionaries Routes
 @bpAdminDictionaries.route("/", methods=["GET"])

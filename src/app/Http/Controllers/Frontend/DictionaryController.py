@@ -1,5 +1,6 @@
 from flask import render_template
-from src.app.Http.Controllers.Controller import Controller
+from ..Controller import Controller
+from ....Models.Dictionary import Dictionary
 
 class DictionaryController(Controller):
     def index():
@@ -8,4 +9,7 @@ class DictionaryController(Controller):
             "Home": "web.index",
             "Kamus SIBI": "#"
         }
-        return render_template("frontend/dictionaries/index.html", title=title, sub_title=sub_title)
+        
+        dictionaries = Dictionary.query.all()
+        
+        return render_template("frontend/dictionaries/index.html", title=title, sub_title=sub_title, dictionaries=dictionaries)

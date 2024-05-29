@@ -1,5 +1,6 @@
 from flask import render_template
-from src.app.Http.Controllers.Controller import Controller
+from ..Controller import Controller
+from ....Models.Article import Article
 
 class ArticleController(Controller):
     def index():
@@ -8,4 +9,10 @@ class ArticleController(Controller):
             "Home": "web.index",
             "Artikel": "#"
         }
-        return render_template("frontend/articles/index.html", title=title, sub_title=sub_title)
+        
+        articles = Article.query.all()
+        
+        return render_template("frontend/articles/index.html", title=title, sub_title=sub_title, articles=articles)
+    
+    def show(slug):
+        pass

@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 import os
 import app
 from slugify import slugify
+
 from ..Controller import Controller
 from ....Models.Dictionary import Dictionary
 
@@ -98,18 +99,19 @@ class DictionaryController(Controller):
                     "message": "No file part"
                 })
                 
-            file = request.files['image']
             # if user does not select file, browser also
             # submit a empty part without filename
-            if file.filename == '':
-                return jsonify({
-                    "status": False,
-                    "message": "No selected file"
-                })
-            if file and DictionaryController.allowed_file(file.filename):
-                os.remove(os.getenv("FILESYSTEM_DRIVER")+'/dictionaries/'+dictionary.image)
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(os.getenv("FILESYSTEM_DRIVER")+'/dictionaries', filename))
+            if request.files['image']:
+                file = request.files['image']
+                if file.filename == '':
+                    return jsonify({
+                        "status": False,
+                        "message": "No selected file"
+                    })
+                if file and DictionaryController.allowed_file(file.filename):
+                    os.remove(os.getenv("FILESYSTEM_DRIVER")+'/dictionaries/'+dictionary.image)
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(os.getenv("FILESYSTEM_DRIVER")+'/dictionaries', filename))
             
             dictionary.image = filename
             dictionary.update()

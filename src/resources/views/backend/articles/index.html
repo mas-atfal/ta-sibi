@@ -30,6 +30,49 @@
                         <th>Status</th>
                         <th width="150">Action</th>
                     </thead>
+
+                    <tbody>
+                        {% for article in articles %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>
+                                <img
+                                    src="{{ url_for('static', filename='storage/articles/' + article.image) }}"
+                                    width="100"
+                                    alt=""
+                                />
+                            </td>
+                            <td>{{ article.title }}</td>
+                            <td>{{ article.category.name }}</td>
+                            <td>
+                                {% if article.status == 'published' %}
+                                <span class="badge bg-success text-white"
+                                    >Published</span
+                                >
+                                {% else %}
+                                <span class="badge bg-warning">Draft</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <a
+                                    href="{{ url_for('admin.articles.edit', id=article.id) }}"
+                                    class="btn btn-success btn-sm"
+                                >
+                                    <i class="fa fa-edit me-0"></i> Edit
+                                </a>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-danger btn-sm btnDeletearticle"
+                                    data-title="{{ article.title }}"
+                                    data-id="{{ article.id }}"
+                                >
+                                    <i class="fa fa-trash me-0"></i> Hapus
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -44,6 +87,48 @@
 <script>
     $(document).ready(function () {
         $("#articles").DataTable();
+
+        $(".btnDeletearticle").click(function (e) {
+            e.preventDefault();
+            var id = $(this).data("id");
+            var title = $(this).data("title");
+            Swal.fire({
+                title: "Apa anda yakin ?",
+                text: "Anda akan menghapus Artikel " + title + " ini",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "destroy/" + id,
+                        type: "DELETE",
+                        success: function (res) {
+                            if (res.status) {
+                                Swal.fire(
+                                    "Success",
+                                    res.message,
+                                    "success"
+                                ).then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire("failed", res.message, "error");
+                                console.log(res.message);
+                            }
+                        },
+                    });
+                } else {
+                    Swal.fire(
+                        "Cancelled",
+                        "Artikel Anda tidak dihapus :)",
+                        "error"
+                    );
+                }
+            });
+        });
     });
 </script>
 

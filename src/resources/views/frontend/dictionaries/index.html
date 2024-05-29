@@ -40,54 +40,17 @@
                             justify-content: center;
                         "
                     >
+                        <!-- Item -->
+                        {% for dictionary in dictionaries %}
                         <div
                             class="gallery-item"
-                            data-image="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
-                            data-title="Image 1"
-                            href="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
-                            title="Image 1"
-                            style="background-image: url({{ url_for('static', filename='templates/img/example-image.jpg') }});"
+                            data-image="{{ url_for('static', filename='storage/dictionaries/' + dictionary.image) }}"
+                            data-title="{{ dictionary.description }}"
+                            href="{{ url_for('static', filename='storage/dictionaries/' + dictionary.image) }}"
+                            title="{{ dictionary.description }}"
+                            style="background-image: url({{ url_for('static', filename='storage/dictionaries/' + dictionary.image) }});"
                         ></div>
-                        <div
-                            class="gallery-item"
-                            data-image="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
-                            data-title="Image 1"
-                            href="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
-                            title="Image 1"
-                            style="background-image: url({{ url_for('static', filename='templates/img/example-image.jpg') }});"
-                        ></div>
-                        <div
-                            class="gallery-item"
-                            data-image="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
-                            data-title="Image 1"
-                            href="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
-                            title="Image 1"
-                            style="background-image: url({{ url_for('static', filename='templates/img/example-image.jpg') }});"
-                        ></div>
-                        <div
-                            class="gallery-item"
-                            data-image="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
-                            data-title="Image 1"
-                            href="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
-                            title="Image 1"
-                            style="background-image: url({{ url_for('static', filename='templates/img/example-image.jpg') }});"
-                        ></div>
-                        <div
-                            class="gallery-item"
-                            data-image="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
-                            data-title="Image 1"
-                            href="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
-                            title="Image 1"
-                            style="background-image: url({{ url_for('static', filename='templates/img/example-image.jpg') }});"
-                        ></div>
-                        <div
-                            class="gallery-item"
-                            data-image="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
-                            data-title="Image 1"
-                            href="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
-                            title="Image 1"
-                            style="background-image: url({{ url_for('static', filename='templates/img/example-image.jpg') }});"
-                        ></div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

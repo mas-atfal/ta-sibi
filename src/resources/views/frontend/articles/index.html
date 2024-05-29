@@ -17,105 +17,42 @@
                     </p>
                 </div>
 
+                {% for article in articles %}
                 <div class="col-12 col-md-4 col-lg-4">
                     <article class="article article-style-c">
                         <div class="article-header">
                             <div
                                 class="article-image"
-                                data-background="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
-                                style="background-image: url({{ url_for('static', filename='templates/img/example-image.jpg') }});"
+                                data-background="{{ url_for('static', filename='storage/articles/'+article.image) }}"
+                                style="background-image: url({{ url_for('static', filename='storage/articles/'+article.image) }});"
                             ></div>
                         </div>
-                        <div class="article-details">
-                            <div class="article-title">
-                                <h2>
-                                    <a href="#"
-                                        >Excepteur sint occaecat cupidatat non
-                                        proident</a
-                                    >
-                                </h2>
-                            </div>
-                            <div class="article-category">
-                                <a href="#">News</a>
-                                <div class="bullet"></div>
-                                <a href="#">5 Days</a>
-                            </div>
-                            <p>
-                                Duis aute irure dolor in reprehenderit in
-                                voluptate velit esse cillum dolore eu fugiat
-                                nulla pariatur.
-                            </p>
-                        </div>
-                    </article>
-                </div>
 
-                <div class="col-12 col-md-4 col-lg-4">
-                    <article class="article article-style-c">
-                        <div class="article-header">
-                            <div
-                                class="article-image"
-                                data-background="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
-                                style="
-                                    background-image: url({{ url_for('static', filename='templates/img/example-image.jpg') }});
-                                "
-                            ></div>
-                        </div>
                         <div class="article-details">
                             <div class="article-title">
                                 <h2>
-                                    <a href="#"
-                                        >Excepteur sint occaecat cupidatat non
-                                        proident</a
+                                    <a
+                                        href="{{ url_for('web.articles.show', slug=article.slug_title) }}"
                                     >
+                                        {{ article.title }}
+                                    </a>
                                 </h2>
                             </div>
-                            <div class="article-category">
-                                <a href="#">News</a>
-                                <div class="bullet"></div>
-                                <a href="#">5 Days</a>
-                            </div>
-                            <p>
-                                Duis aute irure dolor in reprehenderit in
-                                voluptate velit esse cillum dolore eu fugiat
-                                nulla pariatur.
-                            </p>
-                        </div>
-                    </article>
-                </div>
 
-                <div class="col-12 col-md-4 col-lg-4">
-                    <article class="article article-style-c">
-                        <div class="article-header">
-                            <div
-                                class="article-image"
-                                data-background="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
-                                style="
-                                    background-image: url({{ url_for('static', filename='templates/img/example-image.jpg') }});
-                                "
-                            ></div>
-                        </div>
-                        <div class="article-details">
-                            <div class="article-title">
-                                <h2>
-                                    <a href="#"
-                                        >Excepteur sint occaecat cupidatat non
-                                        proident</a
-                                    >
-                                </h2>
-                            </div>
                             <div class="article-category">
-                                <a href="#">News</a>
+                                <a href="#">{{ article.category.name }}</a>
                                 <div class="bullet"></div>
-                                <a href="#">5 Days</a>
+                                <a href="#">
+                                    {{ article.created_at.strftime('%d %b %Y')
+                                    }}
+                                </a>
                             </div>
-                            <p>
-                                Duis aute irure dolor in reprehenderit in
-                                voluptate velit esse cillum dolore eu fugiat
-                                nulla pariatur.
-                            </p>
+
+                            {{ article.content|safe|truncate(100) }}
                         </div>
                     </article>
                 </div>
+                {% endfor %}
             </div>
         </div>
     </div>

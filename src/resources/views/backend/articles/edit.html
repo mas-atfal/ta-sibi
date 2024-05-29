@@ -4,5 +4,181 @@
 {% block content %}
 
 <!-- Content -->
+<!-- Content -->
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <button type="button" class="btn btn-dark" onclick="history.back()">
+                <i class="fa fa-arrow-circle-left me-0"></i> Kembali
+            </button>
+        </div>
+        <div class="card-body">
+            <form
+                method="POST"
+                id="formUpdateArticle"
+                enctype="multipart/form-data"
+                class="needs-validation"
+                novalidate
+            >
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="title">Judul</label>
+                            <input
+                                id="title"
+                                type="text"
+                                class="form-control"
+                                name="title" value="{{ article.title }}"
+                                required
+                            />
+                            <div class="invalid-feedback">
+                                Please fill in your title
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="title">Kategori</label>
+                            <select
+                                id="category_id"
+                                name="category_id"
+                                class="form-control select2"
+                                required
+                            >
+                                <option value="" disabled selected>
+                                    -- Pilih Kategori --
+                                </option>
+
+                                {% for category in categories %}
+                                <option {{ 'selected' if article.category_id == category.id else '' }} value="{{ category.id }}">
+                                    {{ category.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+
+                            <div class="invalid-feedback">
+                                Please fill in your category
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="title">Status</label>
+                            <select
+                                id="status"
+                                name="status"
+                                class="form-control select2"
+                                required
+                            >
+                                <option value="" disabled selected>
+                                    -- Pilih Status --
+                                </option>
+                                <option {{ 'selected' if article.status == 'published' else '' }} value="published">Published</option>
+                                <option {{ 'selected' if article.status == 'draft' else '' }} value="draft">Draft</option>
+                            </select>
+
+                            <div class="invalid-feedback">
+                                Please fill in your category
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="content">Konten</label>
+                            <textarea
+                                id="content"
+                                name="content"
+                                class="form-control summernote"
+                                required
+                            >
+                                {{ article.content }}
+                            </textarea>
+
+                            <div class="invalid-feedback">
+                                Please fill in your Content
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="image">Thumbnail</label>
+                            <input
+                                id="image"
+                                type="file"
+                                class="dropify"
+                                name="image" data-default-file="{{ url_for('static', filename='storage/articles/'+article.image) }}"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <button
+                            type="button"
+                            class="btn btn-dark"
+                            onclick="history.back()"
+                        >
+                            <i class="fa fa-arrow-circle-left me-0"></i>
+                            Kembali
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            id="btnSubmitArticle"
+                        >
+                            <i class="fa fa-save me-0"></i>
+                            Simpan Artikel
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+<!-- Scripts -->
+{% block scripts %}
+
+<script>
+    $(document).ready(function () {
+        $("#formUpdateArticle").submit(function (e) {
+            e.preventDefault();
+            var btnSubmit = $("#btnSubmitArticle");
+            btnSubmit.attr("disabled", true);
+
+            $.ajax({
+                url: "{{ url_for('admin.articles.update', id=article.id) }}",
+                type: "PATCH",
+                contentType: false,
+                cache: false,
+                processData: false,
+                data: new FormData(this),
+                success: function (res) {
+                    if (res.status) {
+                        Swal.fire("Success", res.message, "success").then(
+                            () => {
+                                window.location.href = "{{ url_for('admin.articles.index') }}";
+                            }
+                        );
+                    } else {
+                        btnSubmit.attr("disabled", false);
+                        Swal.fire("failed", res.message, "error");
+                        console.log(res.message);
+                    }
+                },
+                error: function (xhr, status, err) {
+                    // Swal.fire("Failed", xhr.responseJSON.message, "error");
+                    btnSubmit.attr("disabled", false);
+                    console.log(err);
+                },
+            });
+        });
+    });
+</script>
 
 {% endblock %}

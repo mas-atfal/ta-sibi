@@ -15,6 +15,7 @@
             <form
                 action=""
                 method="POST"
+                id="formAddArticle"
                 enctype="multipart/form-data"
                 class="needs-validation"
                 novalidate
@@ -49,7 +50,11 @@
                                     -- Pilih Kategori --
                                 </option>
 
-                                <option value="1">Kategori 1</option>
+                                {% for category in categories %}
+                                <option value="{{ category.id }}">
+                                    {{ category.name }}
+                                </option>
+                                {% endfor %}
                             </select>
 
                             <div class="invalid-feedback">
@@ -70,8 +75,8 @@
                                 <option value="" disabled selected>
                                     -- Pilih Status --
                                 </option>
-                                <option value="1">Published</option>
-                                <option value="2">Draft</option>
+                                <option value="published">Published</option>
+                                <option value="draft">Draft</option>
                             </select>
 
                             <div class="invalid-feedback">
@@ -97,7 +102,32 @@
                     </div>
 
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary">
+                        <div class="form-group">
+                            <label for="image">Thumbnail</label>
+                            <input
+                                id="image"
+                                type="file"
+                                class="dropify"
+                                name="image"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <button
+                            type="button"
+                            class="btn btn-dark"
+                            onclick="history.back()"
+                        >
+                            <i class="fa fa-arrow-circle-left me-0"></i>
+                            Kembali
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            id="btnSubmitArticle"
+                        >
+                            <i class="fa fa-save me-0"></i>
                             Simpan Artikel
                         </button>
                     </div>
@@ -106,5 +136,47 @@
         </div>
     </div>
 </div>
+
+<!-- End Content -->
+{% endblock %}
+
+<!-- Scripts -->
+{% block scripts %}
+
+<script>
+    $(document).ready(function () {
+        $("#btnSubmitArticle").click(function (e) {
+            e.preventDefault();
+            $(this).attr("disabled", true);
+
+            $.ajax({
+                url: "{{ url_for('admin.articles.store') }}",
+                type: "POST",
+                contentType: false,
+                cache: false,
+                processData: false,
+                data: new FormData($("#formAddArticle")[0]),
+                success: function (response) {
+                    if (response.status) {
+                        Swal.fire("Success", response.message, "success").then(
+                            () => {
+                                window.location.href =
+                                    "{{ url_for('admin.articles.index') }}";
+                            }
+                        );
+                    } else {
+                        $("#btnSubmitArticle").attr("disabled", false);
+                        Swal.fire("failed", res.message, "error");
+                        console.log(res.message);
+                    }
+                },
+                error: function (err) {
+                    $("#btnSubmitArticle").attr("disabled", false);
+                    console.log(err);
+                },
+            });
+        });
+    });
+</script>
 
 {% endblock %}
