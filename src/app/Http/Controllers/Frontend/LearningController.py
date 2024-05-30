@@ -34,6 +34,7 @@ class HandSignModel():
         return img
 
     def detect_hand_sign(self, frame = None):
+        result = []
         if frame is None:
             frame = self.img
         h, w, c = frame.shape
@@ -63,46 +64,48 @@ class HandSignModel():
                 x_min -= 20
                 x_max += 20
 
-        analysisframe = cv2.cvtColor(analysisframe, cv2.COLOR_BGR2GRAY)
-        analysisframe = analysisframe[y_min:y_max, x_min:x_max]
-        analysisframe = cv2.resize(analysisframe, (28, 28))
+            analysisframe = cv2.cvtColor(analysisframe, cv2.COLOR_BGR2GRAY)
+            analysisframe = analysisframe[y_min:y_max, x_min:x_max]
+            analysisframe = cv2.resize(analysisframe, (28, 28))
 
-        nlist = []
-        rows, cols = analysisframe.shape
-        for i in range(rows):
-            for j in range(cols):
-                k = analysisframe[i, j]
-                nlist.append(k)
+            nlist = []
+            rows, cols = analysisframe.shape
+            for i in range(rows):
+                for j in range(cols):
+                    k = analysisframe[i, j]
+                    nlist.append(k)
 
-        datan = pd.DataFrame(nlist).T
-        colname = []
-        for val in range(784):
-            colname.append(val)
-        datan.columns = colname
+            datan = pd.DataFrame(nlist).T
+            colname = []
+            for val in range(784):
+                colname.append(val)
+            datan.columns = colname
 
-        pixeldata = datan.values
-        pixeldata = pixeldata / 255
-        pixeldata = pixeldata.reshape(-1, 28, 28, 1)
-        prediction = self.model.predict(pixeldata)
-        predarray = np.array(prediction[0])
-        letter_prediction_dict = {
-            self.letterpred[i]: predarray[i] for i in range(
-                len(self.letterpred))}
-        predarrayordered = sorted(predarray, reverse=True)
-        high1 = predarrayordered[0]
-        high2 = predarrayordered[1]
-        high3 = predarrayordered[2]
-        for key, value in letter_prediction_dict.items():
-            if value == high1:
-                print("Predicted Character 1: ", key)
-                print('Confidence 1: ', 100*value)
-                return key, 100*value
-            elif value == high2:
-                print("Predicted Character 2: ", key)
-                print('Confidence 2: ', 100*value)
-            elif value == high3:
-                print("Predicted Character 3: ", key)
-                print('Confidence 3: ', 100*value)
+            pixeldata = datan.values
+            pixeldata = pixeldata / 255
+            pixeldata = pixeldata.reshape(-1, 28, 28, 1)
+            prediction = self.model.predict(pixeldata)
+            predarray = np.array(prediction[0])
+            letter_prediction_dict = {
+                self.letterpred[i]: predarray[i] for i in range(
+                    len(self.letterpred))}
+            predarrayordered = sorted(predarray, reverse=True)
+            high1 = predarrayordered[0]
+            high2 = predarrayordered[1]
+            high3 = predarrayordered[2]
+            print("letter_prediction_dict.items()", letter_prediction_dict.items())
+            for key, value in letter_prediction_dict.items():
+                if value == high1:
+                    print("Predicted Character 1: ", key)
+                    print('Confidence 1: ', 100*value)
+                    result.insert(0, [key, 100*value]) 
+                    return key, 100*value
+                elif value == high2:
+                    print("Predicted Character 2: ", key)
+                    print('Confidence 2: ', 100*value)
+                elif value == high3:
+                    print("Predicted Character 3: ", key)
+                    print('Confidence 3: ', 100*value)
         return None, None
 
 class LearningController(Controller):
@@ -117,23 +120,29 @@ class LearningController(Controller):
         return render_template("frontend/learning/index.html", title=title, sub_title=sub_title)
     
     def predict():
-        if request.form.get("photo"):
-            hs = HandSignModel()
-            hs.data_uri_to_cv2_img(request.form.get("photo"))
-            predicted_alphabet, confidence = hs.detect_hand_sign()
+        predicted_alphabet = None
         response = {
             "success": False,
             "message": "",
             "predicted": False,
             "alphabet": ""
         }
-        if predicted_alphabet:
-            response['alphabet'] = predicted_alphabet
-            response['predicted'] = True
-            response['success'] = True
+        if request.form.get("photo") is not None and request.form.get(
+            "photo") != "" and request.form.get('photo') != "data:,":
+            hs = HandSignModel()
+            hs.data_uri_to_cv2_img(request.form.get("photo"))
+            predicted_alphabet, confidence = hs.detect_hand_sign()
+            if predicted_alphabet:
+                response['alphabet'] = predicted_alphabet
+                response['predicted'] = True
+                response['success'] = True
+            else:
+                response['predicted'] = False
+                response['success'] = True
         else:
             response['predicted'] = False
-            response['success'] = True
+            response['success'] = False
+            response['message'] = "Image not found"
         return jsonify(response)
 
 
