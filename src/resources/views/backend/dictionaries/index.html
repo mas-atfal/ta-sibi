@@ -94,10 +94,10 @@
                 cache: false,
                 processData: false,
                 data: new FormData($("#formAddDictionary")[0]),
-                success: function (response) {
-                    if (response.status) {
+                success: function (res) {
+                    if (res.status) {
                         $("#addDictionaryModal").modal("hide");
-                        Swal.fire("Success", response.message, "success").then(
+                        Swal.fire("Success", res.message, "success").then(
                             () => {
                                 location.reload();
                             }
@@ -144,10 +144,10 @@
                 cache: false,
                 processData: false,
                 data: new FormData($("#formEditDictionary")[0]),
-                success: function (response) {
-                    if (response.status) {
+                success: function (res) {
+                    if (res.status) {
                         $("#editDictionaryModal").modal("hide");
-                        Swal.fire("Success", response.message, "success").then(
+                        Swal.fire("Success", res.message, "success").then(
                             () => {
                                 location.reload();
                             }
@@ -183,11 +183,11 @@
                     $.ajax({
                         url: "destroy/" + id,
                         type: "DELETE",
-                        success: function (response) {
-                            if (response.status) {
+                        success: function (res) {
+                            if (res.status) {
                                 Swal.fire(
                                     "Success",
-                                    response.message,
+                                    res.message,
                                     "success"
                                 ).then(() => {
                                     location.reload();

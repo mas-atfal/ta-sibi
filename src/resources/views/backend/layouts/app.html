@@ -70,24 +70,42 @@
         <script type="text/javascript">
             $("#logout").on("click", function (e) {
                 e.preventDefault();
-                url = $(this).data("url");
-                swal({
+                Swal.fire({
                     title: "Apa anda yakin ?",
-                    text: "Anda akan keluar dari sistem e-counseling \nSMP NEGERI 3 PANGKAH",
+                    text: "Anda akan keluar dari akun ini",
                     icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, Keluar",
                 }).then((result) => {
-                    if (result) {
-                        swal("Logout!", "", "success");
-                        window.location = "/auth/logout";
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{{ url_for('auth.logout') }}",
+                            type: "POST",
+                            success: function (res) {
+                                if (res.status) {
+                                    Swal.fire(
+                                        "Success",
+                                        res.message,
+                                        "success"
+                                    ).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire("failed", res.message, "error");
+                                    console.log(res.message);
+                                }
+                            },
+                            error: function (err) {
+                                console.log(err);
+                            },
+                        });
                     } else {
-                        swal({
-                            title: "Batal",
-                            text: "Batal logout",
-                            icon: "info",
-                            buttons: false,
-                            timer: 1000,
+                        Swal.fire({
+                            title: "Cancelled",
+                            text: "Anda belum keluar dari sistem :)",
+                            icon: "error",
                         });
                     }
                 });

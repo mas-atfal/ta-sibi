@@ -1,17 +1,13 @@
-from ...config.database import db
-from .BaseModel import BaseModel
+from ...config.database import db, BaseModel
+from flask_login import UserMixin
 
-class User(BaseModel):
+class User(UserMixin, BaseModel):
     __tablename__ = 'users'
     
-    title = db.Column(db.String(255), nullable=False)
-    slug_title = db.Column(db.String(255), nullable=False)
-    content = db.Column(db.Text(), nullable=False)
-    # password: Mapped[str] = mapped_column(nullable=False)
+    name = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    phone = db.Column(db.CHAR(16), nullable=False)
+    email_verified_at = db.Column(db.DateTime(16), nullable=True)
+    password = db.Column(db.String(255), nullable=False)
+    remember_token = db.Column(db.String(255), nullable=True)
     
-    #constructor
-    def __init__(self, name=None, email=None, password=None):
-        self.name = name
-        self.email = email
-        # self.password = password
-        self.authenticated = True

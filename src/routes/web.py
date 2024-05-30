@@ -1,4 +1,5 @@
 from flask import Blueprint
+from flask_login import login_required
 
 from ..app.Http.Controllers.Frontend.HomeController import HomeController as FrontendHomeController
 from ..app.Http.Controllers.Frontend.DictionaryController import DictionaryController as FrontendDictionaryController
@@ -65,14 +66,24 @@ def index():
 
 # Blueprint Auth
 @bpAuth.route("/login", methods=["GET"])
-def index():
+def login():
     return AuthController.index()
 
 @bpAuth.route("/login/doLogin", methods=["POST"])
-def login():
+def do_login():
     return AuthController.doLogin()
 
+@bpAuth.route("/logout", methods=["POST"])
+def logout():
+    return AuthController.logout()
+
 # Blueprint Backend
+
+@bpAdmin.before_request
+@login_required
+def before_request():
+    pass
+
 @bpAdmin.route("/", methods=["GET"])
 def index():
     return HomeController.index()

@@ -4,6 +4,8 @@ import os
 from src import routes
 from src.app.Http import Middleware
 from src.config.database import db
+from src.app.Models.User import User
+from flask_login import LoginManager
 
 def main() -> Flask:
     app = Flask(__name__, template_folder="src/resources/views", static_url_path="/static", static_folder="public")
@@ -15,6 +17,16 @@ def main() -> Flask:
     app.config['UPLOAD_FOLDER'] = 'public/storage'
     
     db.init_app(app)
+    
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.login'
+    login_manager.init_app(app)
+    
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
+    
+    
     routes.register(app)
     
     return app

@@ -1,0 +1,20 @@
+<!-- Category is:  success, danger, warning, info -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+<!-- Check if there are any messages -->
+{% if messages %}
+<!-- Loop through each message -->
+{% for category, message in messages %}
+<div class="alert alert-{{ category }} alert-dismissible show fade">
+    <div class="alert-body">
+        <button class="close" data-dismiss="alert">
+            <span>×</span>
+        </button>
+        {{ message }}
+    </div>
+</div>
+<!-- End Loop -->
+{% endfor %}
+<!-- End Check -->
+{% endif %}
+<!-- End Loop through -->
+{% endwith %}

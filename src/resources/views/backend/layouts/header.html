@@ -18,8 +18,10 @@
                 data-toggle="dropdown"
                 class="nav-link dropdown-toggle nav-link-lg nav-link-user"
             >
-                <img alt="image" src="" class="rounded-circle mr-1" />
-                <div class="d-sm-none d-lg-inline-block">Hai,</div>
+                <!-- <img alt="image" src="" class="rounded-circle mr-1" /> -->
+                <div class="d-sm-none d-lg-inline-block">
+                    Hai, {{ current_user.name }}
+                </div>
             </a>
 
             <div class="dropdown-menu dropdown-menu-right">
@@ -31,7 +33,6 @@
                     href="#"
                     class="dropdown-item has-icon text-danger"
                     id="logout"
-                    data-url=""
                 >
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
