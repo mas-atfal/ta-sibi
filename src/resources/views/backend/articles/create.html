@@ -156,9 +156,9 @@
                 cache: false,
                 processData: false,
                 data: new FormData($("#formAddArticle")[0]),
-                success: function (response) {
-                    if (response.status) {
-                        Swal.fire("Success", response.message, "success").then(
+                success: function (res) {
+                    if (res.status) {
+                        Swal.fire("Success", res.message, "success").then(
                             () => {
                                 window.location.href =
                                     "{{ url_for('admin.articles.index') }}";

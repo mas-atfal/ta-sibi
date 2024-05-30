@@ -85,7 +85,9 @@
 
         $("#btnSubmitDictionary").click(function (e) {
             e.preventDefault();
-            $(this).attr("disabled", true);
+            var btnSubmit = $(this);
+
+            btnSubmit.attr("disabled", true);
 
             $.ajax({
                 url: "{{ url_for('admin.dictionaries.store') }}",
@@ -103,13 +105,13 @@
                             }
                         );
                     } else {
-                        $("#btnSubmitDictionary").attr("disabled", false);
+                        btnSubmit.attr("disabled", false);
                         Swal.fire("failed", res.message, "error");
                         console.log(res.message);
                     }
                 },
                 error: function (err) {
-                    $("#btnSubmitDictionary").attr("disabled", false);
+                    btnSubmit.attr("disabled", false);
                     console.log(err);
                 },
             });
@@ -134,7 +136,9 @@
         // Submit Edit Modal
         $("#btnEditDictionary").click(function (e) {
             e.preventDefault();
-            $(this).attr("disabled", true);
+            var btnSubmit = $(this);
+
+            btnSubmit.attr("disabled", true);
             var id = $("#updateId").val();
 
             $.ajax({
@@ -153,13 +157,13 @@
                             }
                         );
                     } else {
-                        $("#btnEditDictionary").attr("disabled", false);
+                        btnSubmit.attr("disabled", false);
                         Swal.fire("failed", res.message, "error");
                         console.log(res.message);
                     }
                 },
                 error: function (err) {
-                    $("#btnEditDictionary").attr("disabled", false);
+                    btnSubmit.attr("disabled", false);
                     console.log(err);
                 },
             });

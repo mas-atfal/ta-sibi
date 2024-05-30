@@ -89,7 +89,6 @@
                 },
                 success: function (res) {
                     if (res.status) {
-                        btnSubmit.attr("disabled", false);
                         $("#addCategoryModal").modal("hide");
                         Swal.fire("Success", res.message, "success").then(
                             () => {
@@ -136,7 +135,6 @@
                 },
                 success: function (res) {
                     if (res.status) {
-                        btnSubmit.attr("disabled", false);
                         $("#editCategoryModal").modal("hide");
                         Swal.fire("Success", res.message, "success").then(
                             () => {
