@@ -1,40 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'frontend/layouts/app.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webcam Capture</title>
-</head>
+<!-- Block Content -->
+{% block content %}
 
-<body>
-    <h1>Webcam Capture</h1>
-    <span>
-        <video id="videoElement" autoplay></video>
-        <h3 id="statusDisplay"></h3>
-        <h3 id="predictionDisplay"></h3>
-    </span>
-    <button id="startButton">Start Webcam</button>
-    <button id="captureButton">Capture Photo</button>
-    <button id="predictButton">Predict Photo</button>
-    
-    <canvas id="canvasElement" style="display: none;"></canvas>
-    <img id="photoElement" style="display: none;">
+<!-- Content -->
+<div class="section-body">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h4>Belajar Alfabet SIBI</h4>
+                </div>
 
-    <!-- JavaScript code will go here -->
+                <div class="col-12 col-md-8 col-lg-8">
+                    <article class="article article-style-c row justify-content-center">
+                        <img src="{{ url_for('static', filename='iyahicon-play.png') }}" class="article-image"
+                            style="
+                                max-width: 300px;
+                                margin:auto;
+                                padding: auto;
+                            " id="playIcon" class="align-center">
+                            
+                        </img>
+                        <video id="videoElement" autoplay class="d-none"></video>
+                        <canvas id="canvasElement" style="display: none;"></canvas>
+                    </article>
+                </div>
 
-</body>
+                <div class="col-12 col-md-4 col-lg-4">
+                    <article class="article article-style-c">
+                        <div class="article-header">
+                            <!-- data-background="{{ url_for('static', filename='templates/img/example-image.jpg') }}"
+                                style="
+                                    background-image: url({{ url_for('static', filename='templates/img/example-image.jpg') }});
+                                "  -->
+                            <div class="article-image d-flex justify-content-center align-item-center border border-3 border-primary rounded"
+                            style="border: 3px solid #007bff !important;">
+                                <h1 id="predictionDisplay" class="my-auto" style="font-size: 100px;"></h1>
+                            </div>
+                        </div>
+                        <div class="article-details">
+                            <div class="article-title d-flex">
+                                <button id="predictButton" class="btn btn-primary mr-2">Mulai</button>
+                                <button id="stopButton" class="btn btn-primary">Berhenti</button>
+                                <button disabled="disabled" class="btn btn-secondary ml-auto" id="statusDisplay">status</button>
+                            </div>
+                            <div class="article-category d-flex">
+                                <a href="#">Riwayat Kata</a>
+                                <button class="badge btn-danger ml-auto" id="removeWordsHistory">Hapus Riwayat</button>
+                            </div>
+                            <p id="predictionWordsDisplay" style="
+                            margin: 5px;
+                            padding: 5px;
+                            /* width: 500px; */
+                            height: 150px;
+                            overflow: auto;
+                            text-align: justify;
+                            ">
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     const videoElement = document.getElementById('videoElement');
     const canvasElement = document.getElementById('canvasElement');
     const photoElement = document.getElementById('photoElement');
     const statusDisplayElement = document.getElementById('statusDisplay');
     const predictionDisplayElement = document.getElementById('predictionDisplay');
+    const predictionWordsDisplayElement = document.getElementById('predictionWordsDisplay');
     const startButton = document.getElementById('startButton');
-    const captureButton = document.getElementById('captureButton');
+    const stopButton = document.getElementById('stopButton');
     const predictButton = document.getElementById('predictButton');
+    const removeWordsHistoryButton = document.getElementById('removeWordsHistory');
+    const predictionWordsDisplay = document.getElementById('predictionWordsDisplay');
+    const playIcon = document.getElementById('playIcon');
     var predictedHandSign = ""
     var misPredict = 0
+    var webcamStop = true
+    var predictingStat = false
 
     let stream;
 
@@ -46,22 +94,38 @@
         try {
             stream = await navigator.mediaDevices.getUserMedia({ video: true });
             videoElement.srcObject = stream;
-            startButton.disabled = true;
-            captureButton.disabled = false;
+            playIcon.classList.add('d-none');
+            videoElement.classList.remove('d-none');
+            webcamStop = false
         } catch (error) {
             console.error('Error accessing webcam:', error);
         }
     }
 
-    startButton.addEventListener('click', startWebcam);
+    function stopWebcam() {
+        // videoElement.classList.add('d-none');
+        // playIcon.classList.remove('d-none');
+        predictingStat = false
+        mediaStream = videoElement.srcObject;
+        if (mediaStream) {
+            tracks = mediaStream.getTracks();
+            if (tracks.length != 0) {
+                tracks.forEach(track => track.stop())
+                webcamStop = true
+            }
+        }
+    }
+
+    stopButton.addEventListener('click', stopWebcam);
+    startWebcam()
 
     function capturePhoto() {
         canvasElement.width = videoElement.videoWidth;
         canvasElement.height = videoElement.videoHeight;
         canvasElement.getContext('2d').drawImage(videoElement, 0, 0);
         const photoDataUrl = canvasElement.toDataURL('image/jpeg');
-        photoElement.src = photoDataUrl;
-        photoElement.style.display = 'block';
+        // photoElement.src = photoDataUrl;
+        // photoElement.style.display = 'block';
         return photoDataUrl
     }
 
@@ -78,35 +142,65 @@
     }
 
     function predictHandSign() {
-        resp = sendPhoto()
-        resp.then((result) => {
-            statusDisplayElement.innerHTML = "result"
-            if (result.predicted) {
-                appendText(predictionDisplayElement, result.alphabet)
+        if (predictingStat) {
+            resp = sendPhoto()
+            resp.then((result) => {
+                statusDisplayElement.innerHTML = "result"
+                if (result.predicted == true) {
+                    predictButton.disable = true
+                    predictionDisplayElement.innerHTML = result.alphabet
+                    appendText(predictionWordsDisplayElement, result.alphabet)
+                    setTimeout(() => {
+                        if (predictingStat) {
+                            statusDisplayElement.innerHTML = "prediksi"
+                            predictHandSign()
+                        }
+                    }, 2000);
+                } else {
+                    // misPredict++;
+                    predictButton.disable = false
+                    if (result.message) {
+                        alert(result.message)
+                    }
+                    statusDisplayElement.innerHTML = "stop"
+                    if (!predictionWordsDisplayElement.innerHTML.endsWith('<br>')) {
+                        predictionWordsDisplayElement.innerHTML += '<br>'
+                    }
+                }
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
+
+    }
+
+    function startLearning() {
+        predictingStat = true
+        if (webcamStop) {
+            startWebcam().then(() => { 
                 setTimeout(() => {
-                    statusDisplayElement.innerHTML = "capturing"
+                    statusDisplayElement.innerHTML = "prediksi"
                     predictHandSign()
-                }, 2000);
-            } else {
-                misPredict++;
-            }
-            if (misPredict > 2) {
-                predictionDisplayElement += '<br>'
-                misPredict = 0
-            }
-        }).catch((err) => {
-            console.log(err);
-        });
-        
+                }, 1000);
+             })
+        } else {
+            predictHandSign()
+        }
     }
 
     function semiRealTimeRequest() {
+        predictHandSign()
         setInterval(() => {
-            predictHandSign()
         }, 3000);
     }
 
-    captureButton.addEventListener('click', capturePhoto);
-    predictButton.addEventListener('click', predictHandSign);
+    function resetHistory() {
+        predictionWordsDisplayElement.innerHTML = ""
+    }
+
+
+    predictButton.addEventListener('click', startLearning);
+    removeWordsHistoryButton.addEventListener('click', resetHistory)
 </script>
-</html>
+
+{% endblock %}
