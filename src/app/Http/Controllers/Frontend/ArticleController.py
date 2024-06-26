@@ -15,4 +15,12 @@ class ArticleController(Controller):
         return render_template("frontend/articles/index.html", title=title, sub_title=sub_title, articles=articles)
     
     def show(slug):
-        pass
+        title = "Artikel"
+        sub_title = sub_title = {
+            "Home": "web.index",
+            "Artikel": "#"
+        }
+        
+        article = Article.query.filter_by(slug_title=slug).first()
+        
+        return render_template("frontend/articles/show.html", title=title, sub_title=sub_title, article=article)
