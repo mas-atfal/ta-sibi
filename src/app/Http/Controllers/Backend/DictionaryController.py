@@ -59,7 +59,7 @@ class DictionaryController(Controller):
         except Exception as e:
             return jsonify({
                 "status": False,
-                "message": str(e)
+                "message": e
             })
             
     def show(id):

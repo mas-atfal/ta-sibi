@@ -90,7 +90,13 @@
                 success: function (res) {
                     if (res.status) {
                         $("#addCategoryModal").modal("hide");
-                        Swal.fire("Success", res.message, "success").then(
+                        Swal.fire({
+                            title : "Success",
+                                    text :res.message,
+                                    icon : "success",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                        }).then(
                             () => {
                                 location.reload();
                             }
@@ -136,7 +142,13 @@
                 success: function (res) {
                     if (res.status) {
                         $("#editCategoryModal").modal("hide");
-                        Swal.fire("Success", res.message, "success").then(
+                        Swal.fire({
+                            title : "Success",
+                                    text :res.message,
+                                    icon : "success",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                        }).then(
                             () => {
                                 location.reload();
                             }
@@ -175,10 +187,13 @@
                         type: "DELETE",
                         success: function (res) {
                             if (res.status) {
-                                Swal.fire(
-                                    "Success",
-                                    res.message,
-                                    "success"
+                                Swal.fire({
+                                    title : "Success",
+                                    text :res.message,
+                                    icon : "success",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }
                                 ).then(() => {
                                     location.reload();
                                 });

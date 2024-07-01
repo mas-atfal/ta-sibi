@@ -160,7 +160,13 @@
                 data: new FormData(this),
                 success: function (res) {
                     if (res.status) {
-                        Swal.fire("Success", res.message, "success").then(
+                        Swal.fire({
+                            title : "Success",
+                                    text :res.message,
+                                    icon : "success",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                        }).then(
                             () => {
                                 window.location.href = "{{ url_for('admin.articles.index') }}";
                             }
