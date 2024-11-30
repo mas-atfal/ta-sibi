@@ -1,0 +1,193 @@
+<script type="module">
+    
+    
+    import A_sign from "{{ url_for('static', filename = 'handimage/A.svg') }}"
+    import B_sign from "{{ url_for('static', filename = 'handimage/B.svg') }}"
+    import C_sign from "{{ url_for('static', filename = 'handimage/C.svg') }}"
+    import D_sign from "{{ url_for('static', filename = 'handimage/D.svg') }}"
+    import E_sign from "{{ url_for('static', filename = 'handimage/E.svg') }}"
+    import F_sign from "{{ url_for('static', filename = 'handimage/F.svg') }}"
+    import G_sign from "{{ url_for('static', filename = 'handimage/G.svg') }}"
+    import H_sign from "{{ url_for('static', filename = 'handimage/H.svg') }}"
+    import I_sign from "{{ url_for('static', filename = 'handimage/I.svg') }}"
+    import J_sign from "{{ url_for('static', filename = 'handimage/J.svg') }}"
+    import K_sign from "{{ url_for('static', filename = 'handimage/K.svg') }}"
+    import L_sign from "{{ url_for('static', filename = 'handimage/L.svg') }}"
+    import M_sign from "{{ url_for('static', filename = 'handimage/M.svg') }}"
+    import N_sign from "{{ url_for('static', filename = 'handimage/N.svg') }}"
+    import O_sign from "{{ url_for('static', filename = 'handimage/O.svg') }}"
+    import P_sign from "{{ url_for('static', filename = 'handimage/P.svg') }}"
+    import Q_sign from "{{ url_for('static', filename = 'handimage/Q.svg') }}"
+    import R_sign from "{{ url_for('static', filename = 'handimage/R.svg') }}"
+    import S_sign from "{{ url_for('static', filename = 'handimage/S.svg') }}"
+    import T_sign from "{{ url_for('static', filename = 'handimage/T.svg') }}"
+    import U_sign from "{{ url_for('static', filename = 'handimage/U.svg') }}"
+    import V_sign from "{{ url_for('static', filename = 'handimage/V.svg') }}"
+    import W_sign from "{{ url_for('static', filename = 'handimage/W.svg') }}"
+    import X_sign from "{{ url_for('static', filename = 'handimage/X.svg') }}"
+    import Y_sign from "{{ url_for('static', filename = 'handimage/Y.svg') }}"
+    import Z_sign from "{{ url_for('static', filename = 'handimage/Z.svg') }}"
+
+    import A_hand from "{{ url_for('static', filename = 'handimage/Ahand.svg') }}"
+    import B_hand from "{{ url_for('static', filename = 'handimage/Bhand.svg') }}"
+    import C_hand from "{{ url_for('static', filename = 'handimage/Chand.svg') }}"
+    import D_hand from "{{ url_for('static', filename = 'handimage/Dhand.svg') }}"
+    import E_hand from "{{ url_for('static', filename = 'handimage/Ehand.svg') }}"
+    import F_hand from "{{ url_for('static', filename = 'handimage/Fhand.svg') }}"
+    import G_hand from "{{ url_for('static', filename = 'handimage/Ghand.svg') }}"
+    import H_hand from "{{ url_for('static', filename = 'handimage/Hhand.svg') }}"
+    import I_hand from "{{ url_for('static', filename = 'handimage/Ihand.svg') }}"
+    import J_hand from "{{ url_for('static', filename = 'handimage/Jhand.svg') }}"
+    import K_hand from "{{ url_for('static', filename = 'handimage/Khand.svg') }}"
+    import L_hand from "{{ url_for('static', filename = 'handimage/Lhand.svg') }}"
+    import M_hand from "{{ url_for('static', filename = 'handimage/Mhand.svg') }}"
+    import N_hand from "{{ url_for('static', filename = 'handimage/Nhand.svg') }}"
+    import O_hand from "{{ url_for('static', filename = 'handimage/Ohand.svg') }}"
+    import P_hand from "{{ url_for('static', filename = 'handimage/Phand.svg') }}"
+    import Q_hand from "{{ url_for('static', filename = 'handimage/Qhand.svg') }}"
+    import R_hand from "{{ url_for('static', filename = 'handimage/Rhand.svg') }}"
+    import S_hand from "{{ url_for('static', filename = 'handimage/Shand.svg') }}"
+    import T_hand from "{{ url_for('static', filename = 'handimage/Thand.svg') }}"
+    import U_hand from "{{ url_for('static', filename = 'handimage/Uhand.svg') }}"
+    import V_hand from "{{ url_for('static', filename = 'handimage/Vhand.svg') }}"
+    import W_hand from "{{ url_for('static', filename = 'handimage/Whand.svg') }}"
+    import X_hand from "{{ url_for('static', filename = 'handimage/Xhand.svg') }}"
+    import Y_hand from "{{ url_for('static', filename = 'handimage/Yhand.svg') }}"
+    import Z_hand from "{{ url_for('static', filename = 'handimage/Zhand.svg') }}"
+
+    const Signimage = {
+        A: A_sign,
+        B: B_sign,
+        C: C_sign,
+        D: D_sign,
+        E: E_sign,
+        F: F_sign,
+        G: G_sign,
+        H: H_sign,
+        I: I_sign,
+        J: J_sign,
+        K: K_sign,
+        L: L_sign,
+        M: M_sign,
+        N: N_sign,
+        O: O_sign,
+        P: P_sign,
+        Q: Q_sign,
+        R: R_sign,
+        S: S_sign,
+        T: T_sign,
+        U: U_sign,
+        V: V_sign,
+        W: W_sign,
+        X: X_sign,
+        Y: Y_sign,
+        Z: Z_sign,
+    }
+
+    const Signpass = [
+        {
+            src: A_hand,
+            alt: "A",
+        },
+        {
+            src: B_hand,
+            alt: "B",
+        },
+        {
+            src: C_hand,
+            alt: "C",
+        },
+        {
+            src: D_hand,
+            alt: "D",
+        },
+        {
+            src: E_hand,
+            alt: "E",
+        },
+        {
+            src: F_hand,
+            alt: "F",
+        },
+        {
+            src: G_hand,
+            alt: "G",
+        },
+        {
+            src: H_hand,
+            alt: "H",
+        },
+        {
+            src: I_hand,
+            alt: "I",
+        },
+        {
+            src: J_hand,
+            alt: "J",
+        },
+        {
+            src: K_hand,
+            alt: "K",
+        },
+        {
+            src: L_hand,
+            alt: "L",
+        },
+        {
+            src: M_hand,
+            alt: "M",
+        },
+        {
+            src: N_hand,
+            alt: "N",
+        },
+        {
+            src: O_hand,
+            alt: "O",
+        },
+        {
+            src: P_hand,
+            alt: "P",
+        },
+        {
+            src: Q_hand,
+            alt: "Q",
+        },
+        {
+            src: R_hand,
+            alt: "R",
+        },
+        {
+            src: S_hand,
+            alt: "S",
+        },
+        {
+            src: T_hand,
+            alt: "T",
+        },
+        {
+            src: U_hand,
+            alt: "U",
+        },
+        {
+            src: V_hand,
+            alt: "V",
+        },
+        {
+            src: W_hand,
+            alt: "W",
+        },
+        {
+            src: X_hand,
+            alt: "X",
+        },
+        {
+            src: Y_hand,
+            alt: "Y",
+        },
+        {
+            src: Z_hand,
+            alt: "Z",
+        },
+    ]
+</script>
