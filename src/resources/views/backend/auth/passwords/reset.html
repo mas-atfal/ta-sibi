@@ -6,7 +6,7 @@
             content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
             name="viewport"
         />
-        <title>Login Page - SI SIBI</title>
+        <title>Reset Password Page - SI SIBI</title>
 
         <!-- Include Partials Styles -->
         {% include 'backend/layouts/partials/styles.html' %}
@@ -26,7 +26,7 @@
                                     class="card-header"
                                     style="justify-content: center"
                                 >
-                                    <h4>Login</h4>
+                                    <h4>Reset Password</h4>
                                 </div>
 
                                 <!-- {{ password }} -->
@@ -34,11 +34,11 @@
                                 <div class="card-body">
                                     <form
                                         method="POST"
-                                        action="{{ url_for('auth.do_login') }}"
+                                        action="{{ url_for('auth.reset_verified', token=token) }}"
                                         class="needs-validation"
                                         novalidate=""
                                     >
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <label for="email">Email</label>
                                             <input
                                                 id="email"
@@ -52,24 +52,9 @@
                                             <div class="invalid-feedback">
                                                 Please fill in your email
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                         <div class="form-group">
-                                            <div class="d-block">
-                                                <label
-                                                    for="password"
-                                                    class="control-label"
-                                                    >Password</label
-                                                >
-                                                <div class="float-right">
-                                                    <a
-                                                        href="{{ url_for('auth.forgot_password') }}"
-                                                        class="text-small"
-                                                    >
-                                                        Forgot Password?
-                                                    </a>
-                                                </div>
-                                            </div>
                                             <input
                                                 id="password"
                                                 type="password"
@@ -77,6 +62,7 @@
                                                 name="password"
                                                 tabindex="2"
                                                 required=""
+                                                placeholder="Password Baru"
                                             />
                                             <div class="invalid-feedback">
                                                 please fill in your password
@@ -84,6 +70,20 @@
                                         </div>
 
                                         <div class="form-group">
+                                            <input
+                                                id="password_confirmation"
+                                                type="password"
+                                                class="form-control"
+                                                name="password_confirmation"
+                                                tabindex="2"
+                                                required=""
+                                                placeholder="Konfirmasi Password Baru"
+                                            />
+                                            <div class="invalid-feedback">
+                                                please fill in your password
+                                            </div>
+                                        </div>
+                                        <!-- <div class="form-group">
                                             <div
                                                 class="custom-control custom-checkbox"
                                             >
@@ -100,7 +100,7 @@
                                                     >Remember Me</label
                                                 >
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                         <div class="form-group">
                                             <button
@@ -108,7 +108,7 @@
                                                 class="btn btn-primary btn-lg btn-block"
                                                 tabindex="4"
                                             >
-                                                Login
+                                                Reset Password
                                             </button>
                                         </div>
                                     </form>

@@ -1,3 +1,40 @@
+# Coming Soon
+
+# from src.config.routes import Route
+
+# # Frontend Routes
+# Route.group("/", "web", [
+#     Route("/", "Frontend.HomeController.index"),
+#     Route("/dictionaries", "Frontend.DictionaryController.index"),
+#     Route("/learning", "Frontend.LearningController.index"),
+#     Route("/learning/predict", "Frontend.LearningController.predict", ["POST"]),
+#     Route("/articles", "Frontend.ArticleController.index"),
+#     Route("/articles/<string:slug>", "Frontend.ArticleController.show"),
+#     Route("/about", "Frontend.AboutController.index"),
+# ])
+
+# # Auth Routes
+# Route.group("/auth", "auth", [
+#     Route("/login", "Backend.AuthController.index"),
+#     Route("/forgot-password", "Backend.AuthController.forgotPassword"),
+#     Route("/login/doLogin", "Backend.AuthController.doLogin", ["POST"]),
+#     Route("/logout", "Backend.AuthController.logout", ["POST"]),
+# ])
+
+# # Admin Routes
+# Route.group("/admin", "admin", [
+#     Route("/", "Backend.HomeController.index"),
+# ])
+
+# Route.group("/admin/categories", "admin_categories", [
+#     Route("/", "Backend.CategoryController.index"),
+#     Route("/store", "Backend.CategoryController.store", ["POST"]),
+#     Route("/show/<int:id>", "Backend.CategoryController.show"),
+#     Route("/update/<int:id>", "Backend.CategoryController.update", ["PATCH"]),
+#     Route("/destroy/<int:id>", "Backend.CategoryController.destroy", ["DELETE"]),
+# ])
+
+
 from flask import Blueprint
 from flask_login import login_required
 
@@ -12,6 +49,8 @@ from ..app.Http.Controllers.Backend.CategoryController import CategoryController
 from ..app.Http.Controllers.Backend.ArticleController import ArticleController
 from ..app.Http.Controllers.Backend.DictionaryController import DictionaryController
 from ..app.Http.Controllers.Backend.AuthController import AuthController
+
+from flask import request
 
 bpWeb = Blueprint("web", __name__, url_prefix="/")
 bpWebDictionary = Blueprint("dictionaries", __name__, url_prefix='/dictionaries')
@@ -76,6 +115,21 @@ def do_login():
 @bpAuth.route("/logout", methods=["POST"])
 def logout():
     return AuthController.logout()
+
+@bpAuth.route("/forgot-password", methods=["GET"])
+def forgot_password():
+    return AuthController.forgotPassword()
+
+@bpAuth.route("/send-reset-password", methods=["POST"])
+def send_reset_password():
+    return AuthController.sendResetPassword()
+
+@bpAuth.route("/reset-verified/<token>", methods=["POST", "GET"])
+def reset_verified(token):
+    if request.method == "POST":
+        return AuthController.resetVerifiedPassword(token)
+    else:
+        return AuthController.resetVerifiedShow(token)
 
 # Blueprint Backend
 
@@ -154,4 +208,3 @@ def update(id):
 @bpAdminDictionaries.route("/destroy/<int:id>", methods=["DELETE"])
 def destroy(id):
     return DictionaryController.destroy(id)
-
