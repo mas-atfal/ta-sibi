@@ -14,16 +14,17 @@
 
                 <div class="col-12 col-md-8 col-lg-8">
                     <article class="article article-style-c row justify-content-center">
-                        <img src="{{ url_for('static', filename='iyahicon-play.png') }}" class="article-image"
+                        <img src="{{ url_for('static', filename='loading.gif') }}" class="article-image"
                             style="
                                 max-width: 300px;
                                 margin:auto;
                                 padding: auto;
                             " id="playIcon" class="align-center">
-                            
                         </img>
-                        <video id="videoElement" autoplay class="d-none"></video>
-                        <canvas id="canvasElement" style="display: none;"></canvas>
+                        <div style="position: relative;">
+                            <video id="videoElement" autoplay ></video>
+                            <canvas id="canvasElement" style="position: absolute; left: 0px; top: 0px;" ></canvas>
+                        </div>
                     </article>
                 </div>
 
@@ -68,17 +69,19 @@
 </div>
 
 
-<script src=" https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.7.0/dist/tf.min.js "></script>
-<script src=" https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose@0.0.6/dist/handpose.min.js "></script>
-<script src=" https://cdn.jsdelivr.net/npm/fingerpose@0.0.2/dist/fingerpose.min.js "></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.7.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose@0.0.6/dist/handpose.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fingerpose@0.0.2/dist/fingerpose.min.js"></script>
 
 {# include 'frontend/learning/handimage.html' #}
 {% include 'frontend/learning/fingerpose.html' %}
+{% include 'frontend/learning/handposeutil.html' %}
 <script type="module" src="{{ url_for('static', filename='handimage/index.js') }}"></script>
 
 <script>
     const videoElement = document.getElementById('videoElement');
     const canvasElement = document.getElementById('canvasElement');
+    const canvasCtx = canvasElement.getContext("2d")
     const photoElement = document.getElementById('photoElement');
     const statusDisplayElement = document.getElementById('statusDisplay');
     const statusDisplayTFElement = document.getElementById('statusDisplayTF');
@@ -115,6 +118,8 @@
     netH.then((n) => {
         net = n
         tfModelStatusToggleUp()
+        console.log("net was loaded")
+        startWebcam()
     })
 
     async function detect(net) {
@@ -129,16 +134,20 @@
             // Get Video Properties
             canvasElement.width = videoElement.videoWidth;
             canvasElement.height = videoElement.videoHeight;
-            canvasElement.getContext('2d').drawImage(videoElement, 0, 0);
+            canvasCtx.drawImage(videoElement, 0, 0);
             const photoDataUrl = canvasElement.toDataURL('image/jpeg');
             const video = videoElement
             const videoWidth = videoElement.videoWidth
             const videoHeight = videoElement.videoHeight
+            // canvasCtx.save();
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
 
 
             // Make Detections
             const hand = await net.estimateHands(video)
-
+            console.log(hand);
+            let resultDetection = undefined;
             if (hand.length > 0) {
                 //loading the fingerpose model
                 const GE = new fp.GestureEstimator([
@@ -183,15 +192,35 @@
                         Math.max.apply(undefined, confidence)
                     )
                     console.log(estimatedGestures.gestures[maxConfidence].name)
-                    return estimatedGestures.gestures[maxConfidence]
+                    resultDetection = estimatedGestures.gestures[maxConfidence]
                 } else {
                     console.log("not detected")
-                    return undefined
                 }
             }
             // Draw hand lines
-            // const ctx = canvasRef.current.getContext("2d")
-            // drawHand(hand, ctx)
+            drawHand(hand, canvasCtx)
+            if (resultDetection != undefined) {
+                console.log("ini res"); console.log(resultDetection);
+                predictionDisplayElement.innerHTML = resultDetection.name
+                appendText(predictionWordsDisplayElement, resultDetection.name)
+                statusDisplayElement.innerHTML = "prediksi"
+                // setTimeout(() => {
+                //     if (predictingStat) {
+                //         predictHandSign()
+                //     }
+                // }, 2000);
+            } else {
+                if (misPredict > 3) {
+                    misPredict = 0
+                    predictButton.disable = false
+                    // console.log("detect(net): " + res);
+                    statusDisplayElement.innerHTML = "stop"
+                    if (!predictionWordsDisplayElement.innerHTML.endsWith('<br>')) {
+                        predictionWordsDisplayElement.innerHTML += '<br>'
+                    }
+                }
+                misPredict++;
+            }
         }
     }
 
@@ -218,6 +247,14 @@
             videoElement.srcObject = stream;
             playIcon.classList.add('d-none');
             videoElement.classList.remove('d-none');
+            videoElement.addEventListener("loadeddata", (event) => {
+                streaming = true;
+                predictingStat = true;
+                console.log("")
+                setInterval(() => {
+                    detect(net)
+                }, 150);
+            });
             webcamStop = false
         } catch (error) {
             console.error('Error accessing webcam:', error);
@@ -240,7 +277,6 @@
     }
 
     stopButton.addEventListener('click', stopWebcam);
-    startWebcam()
 
     function capturePhoto() {
         canvasElement.width = videoElement.videoWidth;
@@ -266,27 +302,32 @@
 
     function predictHandSign() {
         if (predictingStat) {
-        detect(net).then((res) => {
-            if(res != undefined) {
-                console.log("ini res");console.log(res);
-                predictionDisplayElement.innerHTML = res.name
-                appendText(predictionWordsDisplayElement, res.name)
-                statusDisplayElement.innerHTML = "prediksi"
-                // setTimeout(() => {
-                //     if (predictingStat) {
-                //         predictHandSign()
-                //     }
-                // }, 2000);
-            } else {
-                // misPredict++;
-                predictButton.disable = false
-                // console.log("detect(net): " + res);
-                statusDisplayElement.innerHTML = "stop"
-                if (!predictionWordsDisplayElement.innerHTML.endsWith('<br>')) {
-                    predictionWordsDisplayElement.innerHTML += '<br>'
+            console.log("predicting")
+            detect(net).then((res) => {
+                if(res != undefined) {
+                    console.log("ini res");console.log(res);
+                    predictionDisplayElement.innerHTML = res.name
+                    appendText(predictionWordsDisplayElement, res.name)
+                    statusDisplayElement.innerHTML = "prediksi"
+                    // setTimeout(() => {
+                    //     if (predictingStat) {
+                    //         predictHandSign()
+                    //     }
+                    // }, 2000);
+                } else {
+                    if (misPredict > 3) {
+                        misPredict = 0
+                        predictButton.disable = false
+                        // console.log("detect(net): " + res);
+                        statusDisplayElement.innerHTML = "stop"
+                        if (!predictionWordsDisplayElement.innerHTML.endsWith('<br>')) {
+                            predictionWordsDisplayElement.innerHTML += '<br>'
+                        }
+                    }
+                    misPredict++;
                 }
-            }
-        })}
+            })
+        }
         // if (predictingStat) {
         //     resp = sendPhoto()
         //     resp.then((result) => {
@@ -323,23 +364,17 @@
         predictingStat = true
         if (webcamStop) {
             startWebcam().then(() => {
-                setTimeout(() => {
-                    statusDisplayElement.innerHTML = "prediksi"
-                    predictHandSign()
-                }, 1000);
+                // setTimeout(() => {
+                //     statusDisplayElement.innerHTML = "prediksi"
+                //     predictHandSign()
+                // }, 1000);
             })
         } else {
-            setTimeout(() => {
-                statusDisplayElement.innerHTML = "prediksi"
-                predictHandSign()
-            }, 1000);
+            // setTimeout(() => {
+            //     statusDisplayElement.innerHTML = "prediksi"
+            //     predictHandSign()
+            // }, 1000);
         }
-    }
-
-    function semiRealTimeRequest() {
-        setInterval(() => {
-            predictHandSign()
-        }, 1000);
     }
 
     function resetHistory() {
@@ -364,12 +399,6 @@
     //     },
     //     false,
     // );
-
-    videoElement.addEventListener("loadeddata", (event) => {
-        streaming = true;
-        predictingStat = true;
-        semiRealTimeRequest()
-    });
 
 
     predictButton.addEventListener('click', startLearning);
