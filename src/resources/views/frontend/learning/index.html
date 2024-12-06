@@ -76,6 +76,7 @@
 {# include 'frontend/learning/handimage.html' #}
 {% include 'frontend/learning/fingerpose.html' %}
 {% include 'frontend/learning/handposeutil.html' %}
+{% include 'frontend/learning/singkatan.html' %}
 <script type="module" src="{{ url_for('static', filename='handimage/index.js') }}"></script>
 
 <script>
@@ -95,11 +96,14 @@
     const playIcon = document.getElementById('playIcon');
     const netH = handpose.load()
     var streaming = false;
+    var startPredictingCount = 0
     var net = undefined
     var predictedHandSign = ""
     var misPredict = 0
     var webcamStop = true
     var predictingStat = false
+    var predictLooper = undefined
+    var predictCatcher = undefined
     // Handpose mediapipe code
     let signList = []
     let currentSign = 0
@@ -118,7 +122,6 @@
     netH.then((n) => {
         net = n
         tfModelStatusToggleUp()
-        console.log("net was loaded")
         startWebcam()
     })
 
@@ -146,7 +149,6 @@
 
             // Make Detections
             const hand = await net.estimateHands(video)
-            console.log(hand);
             let resultDetection = undefined;
             if (hand.length > 0) {
                 //loading the fingerpose model
@@ -200,23 +202,33 @@
             // Draw hand lines
             drawHand(hand, canvasCtx)
             if (resultDetection != undefined) {
-                console.log("ini res"); console.log(resultDetection);
                 predictionDisplayElement.innerHTML = resultDetection.name
-                appendText(predictionWordsDisplayElement, resultDetection.name)
+                predictCatch(predictionWordsDisplayElement, resultDetection.name)
                 statusDisplayElement.innerHTML = "prediksi"
-                // setTimeout(() => {
-                //     if (predictingStat) {
-                //         predictHandSign()
-                //     }
-                // }, 2000);
             } else {
-                if (misPredict > 3) {
+                if (misPredict > 20 || resultDetection == fp.Gestures.ThumbsUpGesture.name) {
                     misPredict = 0
                     predictButton.disable = false
-                    // console.log("detect(net): " + res);
                     statusDisplayElement.innerHTML = "stop"
                     if (!predictionWordsDisplayElement.innerHTML.endsWith('<br>')) {
-                        predictionWordsDisplayElement.innerHTML += '<br>'
+                        words = predictionWordsDisplayElement.innerHTML.split('<br>')
+                        lastword = words[words.length - 1]
+                        let singkatans = get_singkatan()
+                        let kepanjangan = ""
+                        for (let index = 0; index < singkatans.length; index++) {
+                            if (lastword.includes(singkatans[index]["singkatan"])) {
+                                kepanjangan = singkatans[index]["kepanjangan"]
+                            }
+                        }
+                        if (kepanjangan == "") {
+                            kepanjangan = lastword
+                        }
+                        words[words.length - 1] = kepanjangan
+                        predictionWordsDisplayElement.innerHTML = ""
+                        words.forEach(w => {
+                            predictionWordsDisplayElement.innerHTML += w
+                            predictionWordsDisplayElement.innerHTML += '<br>'
+                        });
                     }
                 }
                 misPredict++;
@@ -241,6 +253,16 @@
         e.innerHTML += s
     }
 
+    function predictCatch(e, s) {
+        if (predictingStat) {
+            startPredictingCount++
+            if (startPredictingCount > 10) {
+                appendText(e, s)
+                startPredictingCount = 0
+            }
+        }
+    }
+
     async function startWebcam() {
         try {
             stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -250,9 +272,11 @@
             videoElement.addEventListener("loadeddata", (event) => {
                 streaming = true;
                 predictingStat = true;
-                console.log("")
+                startPredictingCount = 0
                 setInterval(() => {
-                    detect(net)
+                    if (predictingStat) {
+                        detect(net)
+                    }
                 }, 150);
             });
             webcamStop = false
@@ -266,6 +290,7 @@
         // playIcon.classList.remove('d-none');
         predictingStat = false
         mediaStream = videoElement.srcObject;
+        startPredictingCount = 0
         if (mediaStream) {
             tracks = mediaStream.getTracks();
             if (tracks.length != 0) {
