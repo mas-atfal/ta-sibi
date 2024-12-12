@@ -1,0 +1,231 @@
+{% extends 'backend/layouts/app.html' %}
+
+<!-- Block Content -->
+{% block content %}
+
+<!-- Content -->
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <button
+                type="button"
+                class="btn btn-dark mr-2"
+                onclick="history.back()"
+            >
+                <i class="fa fa-arrow-circle-left me-0"></i>
+                Kembali
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#addNumberModal"
+            >
+                <i class="fa fa-plus-circle me-0"></i> Tambah {{ title }}
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table
+                    id="numbers"
+                    style="width: 98%"
+                    class="table table-striped table-bordered dataTable"
+                >
+                    <thead>
+                        <th width="30">No</th>
+                        <th>Nama</th>
+                        <th>Link Video</th>
+                        <th width="150">Action</th>
+                    </thead>
+
+                    <tbody>
+                        {% for number in numbers %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ number.name }}</td>
+                            <td>{{ number.video_link }}</td>
+                            <td class="text-center">
+                                <button
+                                    type="button"
+                                    data-id="{{ number.id }}"
+                                    class="btn btn-success btn-sm"
+                                    data-toggle="modal"
+                                    data-target="#editNumberModal"
+                                >
+                                    <i class="fa fa-edit me-0"></i> Edit
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-danger btn-sm btnDeleteNumber"
+                                    data-name="{{ number.name }}"
+                                    data-id="{{ number.id }}"
+                                >
+                                    <i class="fa fa-trash me-0"></i> Hapus
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Content -->
+{% endblock %}
+
+<!-- Scripts -->
+{% block scripts %}
+
+<!-- Modal -->
+{% include 'backend/vocabularies/numbers/m_number.html' %}
+
+<script>
+    $(document).ready(function () {
+        $("#numbers").DataTable();
+
+        $("#btnSubmitNumber").click(function (e) {
+            e.preventDefault();
+            var btnSubmit = $(this);
+
+            btnSubmit.attr("disabled", true);
+
+            $.ajax({
+                url: "{{ url_for('admin.vocabularies.numbers.store') }}",
+                type: "POST",
+                contentType: false,
+                cache: false,
+                processData: false,
+                data: new FormData($("#formAddNumber")[0]),
+                success: function (res) {
+                    if (res.status) {
+                        $("#addNumberModal").modal("hide");
+                        Swal.fire({
+                            title: "Success",
+                            text: res.message,
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        btnSubmit.attr("disabled", false);
+                        Swal.fire("failed", res.message, "error");
+                        console.log(res.message);
+                    }
+                },
+                error: function (err) {
+                    btnSubmit.attr("disabled", false);
+                    console.log(err);
+                },
+            });
+        });
+
+        // Show Edit Modal
+        $("#editNumberModal").on("show.bs.modal", function (e) {
+            var id = $(e.relatedTarget).data("id");
+            var url = "show/" + id;
+
+            $.get(url, function (res) {
+                if (res.status) {
+                    $("#updateId").val(res.data.id);
+                    $("#nameEdit").val(res.data.name);
+                    $("#videoLinkEdit").val(res.data.video_link);
+                }
+            });
+        });
+
+        // Submit Edit Modal
+        $("#btnEditNumber").click(function (e) {
+            e.preventDefault();
+            var btnSubmit = $(this);
+
+            btnSubmit.attr("disabled", true);
+            var id = $("#updateId").val();
+
+            $.ajax({
+                url: "update/" + id,
+                type: "PATCH",
+                contentType: false,
+                cache: false,
+                processData: false,
+                data: new FormData($("#formEditNumber")[0]),
+                success: function (res) {
+                    if (res.status) {
+                        $("#editNumberModal").modal("hide");
+                        Swal.fire({
+                            title: "Success",
+                            text: res.message,
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        btnSubmit.attr("disabled", false);
+                        Swal.fire("failed", res.message, "error");
+                        console.log(res.message);
+                    }
+                },
+                error: function (err) {
+                    btnSubmit.attr("disabled", false);
+                    console.log(err);
+                },
+            });
+        });
+
+        // Delete
+        $(".btnDeleteNumber").click(function (e) {
+            e.preventDefault();
+            var id = $(this).data("id");
+            var name = $(this).data("name");
+            Swal.fire({
+                title: "Apa anda yakin ?",
+                text: "Anda akan menghapus Kamus " + name + " ini",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "destroy/" + id,
+                        type: "DELETE",
+                        success: function (res) {
+                            if (res.status) {
+                                Swal.fire({
+                                    title: "Success",
+                                    text: res.message,
+                                    icon: "success",
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire("failed", res.message, "error");
+                                console.log(res.message);
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        },
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Cancelled",
+                        text: "Kamus Anda tidak dihapus :)",
+                        icon: "error",
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'frontend/layouts/app.html' %}
+
+<!-- Block Content -->
+{% block content %}
+
+<!-- Block Styles -->
+{% block styles %}
+
+<style>
+    .gallery.gallery-md .gallery-item {
+        width: 150px;
+        height: 150px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+</style>
+
+{% endblock %}
+
+<!-- Content -->
+<div class="section-body">
+    <!-- Alphabets -->
+    {% include 'frontend/vocabularies/partials/alphabets-card.html' %}
+
+    <!-- Affixes -->
+    {% include 'frontend/vocabularies/partials/affixes-card.html' %}
+
+    <!-- Numbers -->
+    {% include 'frontend/vocabularies/partials/numbers-card.html' %}
+</div>
+
+{% endblock %}

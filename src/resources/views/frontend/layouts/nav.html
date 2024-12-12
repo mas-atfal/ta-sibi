@@ -33,18 +33,20 @@
             </li>
 
             <li
-                class="nav-item {% if request.path == url_for('web.dictionaries.index') %} active {% endif %}"
+                class="nav-item {% if request.path == url_for('web.vocabularies.index') %} active {% endif %}"
             >
                 <a
-                    href="{{ url_for('web.dictionaries.index') }}"
+                    href="{{ url_for('web.vocabularies.index') }}"
                     class="nav-link"
                 >
                     <i class="fas fa-book"></i>
-                    <span>Kamus SIBI</span>
+                    <span>Kosa Kata</span>
                 </a>
             </li>
 
-            <li class="nav-item {% if request.path == url_for('web.learning.index') %} active {% endif %}">
+            <li
+                class="nav-item {% if request.path == url_for('web.learning.index') %} active {% endif %}"
+            >
                 <a href="{{ url_for('web.learning.index') }}" class="nav-link">
                     <i class="fas fa-chalkboard-teacher"></i>
                     <span>Belajar SIBI</span>

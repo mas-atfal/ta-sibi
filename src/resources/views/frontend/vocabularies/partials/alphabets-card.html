@@ -20,23 +20,23 @@
                     "
                 >
                     <!-- Item -->
-                    {% for dictionary in dictionaries %}
+                    {% for alphabet in alphabets %}
                     <div
                         class="gallery-item"
-                        data-image="{{ url_for('static', filename='storage/dictionaries/' + dictionary.image) }}"
-                        data-title="{{ dictionary.description }}"
-                        href="{{ url_for('static', filename='storage/dictionaries/' + dictionary.image) }}"
-                        title="{{ dictionary.description }}"
-                        style="background-image: url({{ url_for('static', filename='storage/dictionaries/' + dictionary.image) }});"
+                        data-image="{{ url_for('static', filename='storage/alphabets/' + alphabet.image) }}"
+                        data-title="{{ alphabet.description }}"
+                        href="{{ url_for('static', filename='storage/alphabets/' + alphabet.image) }}"
+                        title="{{ alphabet.description }}"
+                        style="background-image: url({{ url_for('static', filename='storage/alphabets/' + alphabet.image) }});"
                     ></div>
                     {% endfor %}
                 </div>
             </div>
 
-            <div class="col-md-12 text-center mt-3">
+            <div class="col-md-12 mt-2 text-center">
                 <a
-                    href="{{ url_for('web.dictionaries.index') }}"
-                    class="btn btn-primary btn-lg"
+                    href="{{ url_for('web.vocabularies.index') }}"
+                    class="btn btn-primary btn-md"
                     >Lihat Selengkapnya</a
                 >
             </div>

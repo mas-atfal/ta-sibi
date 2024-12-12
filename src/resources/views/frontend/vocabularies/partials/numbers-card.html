@@ -1,0 +1,49 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h4>Angka</h4>
+                <p>
+                    Kenali berbagai angka dalam bahasa isyarat tangan, mulai
+                    dari nol hingga angka besar. Kamus kami membantu Anda
+                    memahami penggunaan angka dalam konteks seperti menghitung,
+                    menyebutkan waktu, atau nomor telepon, dengan simulasi
+                    gerakan tangan yang dapat dipraktikkan secara realtime
+                    melalui teknologi kecerdasan buatan.
+                </p>
+            </div>
+
+            {% for number in numbers %}
+            <div class="col-md-4">
+                <video
+                    id="my-video-1"
+                    class="video-js vjs-default-skin"
+                    controls
+                    preload="auto"
+                    width="350"
+                    height="264"
+                    data-setup='{"techOrder": ["youtube"], "sources": [{"type": "video/youtube", "src": "{{ number.video_link }}"}]}'
+                >
+                    <p class="vjs-no-js">
+                        To view this video please enable JavaScript, and
+                        consider upgrading to a web browser that
+                        <a
+                            href="https://videojs.com/html5-video-support/"
+                            target="_blank"
+                            >supports HTML5 video</a
+                        >
+                    </p>
+                </video>
+            </div>
+            {% endfor %}
+
+            <div class="col-md-12 mt-2 text-center">
+                <a
+                    href="{{ url_for('web.vocabularies.index') }}"
+                    class="btn btn-primary btn-md"
+                    >Lihat Selengkapnya</a
+                >
+            </div>
+        </div>
+    </div>
+</div>

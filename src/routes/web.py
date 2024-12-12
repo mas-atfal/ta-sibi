@@ -39,7 +39,7 @@ from flask import Blueprint
 from flask_login import login_required
 
 from ..app.Http.Controllers.Frontend.HomeController import HomeController as FrontendHomeController
-from ..app.Http.Controllers.Frontend.DictionaryController import DictionaryController as FrontendDictionaryController
+from ..app.Http.Controllers.Frontend.Vocabulary.VocabularyController import VocabularyController as FrontendVocabularyController
 from ..app.Http.Controllers.Frontend.ArticleController import ArticleController as FrontendArticleController
 from ..app.Http.Controllers.Frontend.LearningController import LearningController as FrontendLearningController
 from ..app.Http.Controllers.Frontend.AboutController import AboutController as FrontendAboutController
@@ -47,13 +47,16 @@ from ..app.Http.Controllers.Frontend.AboutController import AboutController as F
 from ..app.Http.Controllers.Backend.HomeController import HomeController
 from ..app.Http.Controllers.Backend.CategoryController import CategoryController
 from ..app.Http.Controllers.Backend.ArticleController import ArticleController
-from ..app.Http.Controllers.Backend.DictionaryController import DictionaryController
+from ..app.Http.Controllers.Backend.Vocabulary.AlphabetController import AlphabetController
+from ..app.Http.Controllers.Backend.Vocabulary.WordController import WordController
+from ..app.Http.Controllers.Backend.Vocabulary.AffixController import AffixController
+from ..app.Http.Controllers.Backend.Vocabulary.NumberController import NumberController
 from ..app.Http.Controllers.Backend.AuthController import AuthController
 
 from flask import request
 
 bpWeb = Blueprint("web", __name__, url_prefix="/")
-bpWebDictionary = Blueprint("dictionaries", __name__, url_prefix='/dictionaries')
+bpWebVocabulary = Blueprint("vocabularies", __name__, url_prefix='/vocabularies')
 bpWebArticle = Blueprint("articles", __name__, url_prefix='/articles')
 bpWebLearning = Blueprint("learning", __name__, url_prefix='/learning')
 bpWebAbout = Blueprint("about", __name__, url_prefix='/about')
@@ -63,25 +66,36 @@ bpAuth = Blueprint("auth", __name__, url_prefix='/auth')
 bpAdmin = Blueprint("admin", __name__, url_prefix='/admin')
 bpAdminArticles = Blueprint("articles", __name__, url_prefix='/articles')
 bpAdminCategories = Blueprint("categories", __name__, url_prefix='/categories')
-bpAdminDictionaries = Blueprint("dictionaries", __name__, url_prefix='/dictionaries')
 
-bpWeb.register_blueprint(bpWebDictionary)
+# Admin Vocabularies
+bpAdminVocabularies = Blueprint("vocabularies", __name__, url_prefix='/vocabularies')
+bpAdminAlphabets = Blueprint("alphabets", __name__, url_prefix='/alphabets')
+bpAdminWords = Blueprint("words", __name__, url_prefix='/words')
+bpAdminNumbers = Blueprint("numbers", __name__, url_prefix='/numbers')
+bpAdminAffixes = Blueprint("affixes", __name__, url_prefix='/affixes')
+
+bpWeb.register_blueprint(bpWebVocabulary)
 bpWeb.register_blueprint(bpWebArticle)
 bpWeb.register_blueprint(bpWebLearning)
 bpWeb.register_blueprint(bpWebAbout)
 
 bpAdmin.register_blueprint(bpAdminCategories)
 bpAdmin.register_blueprint(bpAdminArticles)
-bpAdmin.register_blueprint(bpAdminDictionaries)
+bpAdmin.register_blueprint(bpAdminVocabularies)
+
+bpAdminVocabularies.register_blueprint(bpAdminAlphabets)
+bpAdminVocabularies.register_blueprint(bpAdminNumbers)
+bpAdminVocabularies.register_blueprint(bpAdminAffixes)
+bpAdminAlphabets.register_blueprint(bpAdminWords)
 
 # Blueprint Frontend
 @bpWeb.route("/")
 def index():
     return FrontendHomeController.index()
 
-@bpWebDictionary.route("/")
+@bpWebVocabulary.route("/")
 def index():
-    return FrontendDictionaryController.index()
+    return FrontendVocabularyController.index()
 
 @bpWebLearning.route("/")
 def index():
@@ -188,23 +202,86 @@ def update(id):
 def destroy(id):
     return ArticleController.destroy(id)
 
-# Admin Dictionaries Routes
-@bpAdminDictionaries.route("/", methods=["GET"])
+# Admin Alphabets Routes
+@bpAdminAlphabets.route("/", methods=["GET"])
 def index():
-    return DictionaryController.index()
+    return AlphabetController.index()
 
-@bpAdminDictionaries.route("/store", methods=["POST"])
+@bpAdminAlphabets.route("/store", methods=["POST"])
 def store():
-    return DictionaryController.store()
+    return AlphabetController.store()
 
-@bpAdminDictionaries.route("/show/<int:id>", methods=["GET"])
+@bpAdminAlphabets.route("/show/<int:id>", methods=["GET"])
 def show(id):
-    return DictionaryController.show(id)
+    return AlphabetController.show(id)
 
-@bpAdminDictionaries.route("/update/<int:id>", methods=["PATCH"])
+@bpAdminAlphabets.route("/update/<int:id>", methods=["PATCH"])
 def update(id):
-    return DictionaryController.update(id)
+    return AlphabetController.update(id)
 
-@bpAdminDictionaries.route("/destroy/<int:id>", methods=["DELETE"])
+@bpAdminAlphabets.route("/destroy/<int:id>", methods=["DELETE"])
 def destroy(id):
-    return DictionaryController.destroy(id)
+    return AlphabetController.destroy(id)
+
+# Admin Words Routes
+@bpAdminWords.route("/", methods=["GET"])
+def index():
+    return WordController.index()
+
+@bpAdminWords.route("/store", methods=["POST"])
+def store():
+    return WordController.store()
+
+@bpAdminWords.route("/show/<int:id>", methods=["GET"])
+def show(id):
+    return WordController.show(id)
+
+@bpAdminWords.route("/update/<int:id>", methods=["PATCH"])
+def update(id):
+    return WordController.update(id)
+
+@bpAdminWords.route("/destroy/<int:id>", methods=["DELETE"])
+def destroy(id):
+    return WordController.destroy(id)
+
+# Admin Affixes Routes
+@bpAdminAffixes.route("/", methods=["GET"])
+def index():
+    return AffixController.index()
+
+@bpAdminAffixes.route("/store", methods=["POST"])
+def store():
+    return AffixController.store()
+
+@bpAdminAffixes.route("/show/<int:id>", methods=["GET"])
+def show(id):
+    return AffixController.show(id)
+
+@bpAdminAffixes.route("/update/<int:id>", methods=["PATCH"])
+def update(id):
+    return AffixController.update(id)
+
+@bpAdminAffixes.route("/destroy/<int:id>", methods=["DELETE"])
+def destroy(id):
+    return AffixController.destroy(id)
+
+# Admin Numbers Routes
+@bpAdminNumbers.route("/", methods=["GET"])
+def index():
+    return NumberController.index()
+
+@bpAdminNumbers.route("/store", methods=["POST"])
+def store():
+    return NumberController.store()
+
+@bpAdminNumbers.route("/show/<int:id>", methods=["GET"])
+def show(id):
+    return NumberController.show(id)
+
+@bpAdminNumbers.route("/update/<int:id>", methods=["PATCH"])
+def update(id):
+    return NumberController.update(id)
+
+@bpAdminNumbers.route("/destroy/<int:id>", methods=["DELETE"])
+def destroy(id):
+    return NumberController.destroy(id)

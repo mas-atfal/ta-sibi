@@ -44,15 +44,47 @@
             </li>
 
             <li
-                class="{{ 'active' if request.path.split('/')[2] == 'dictionaries' else '' }}"
+                class="dropdown {{ 'active' if request.path.split('/')[2] == 'vocabularies' else '' }}"
             >
                 <a
-                    class="nav-link"
-                    href="{{ url_for('admin.dictionaries.index') }}"
+                    href="#"
+                    class="nav-link has-dropdown"
+                    data-toggle="dropdown"
                 >
-                    <i class="fas fa-file"></i>
-                    <span>Kamus SIBI</span>
+                    <i class="fas fa-columns"></i>
+                    <span>Kosa Kata</span>
                 </a>
+                <ul class="dropdown-menu" style="display: none">
+                    <li
+                        class="{{ 'active' if request.path.split('/')[3] == 'alphabets' else '' }}"
+                    >
+                        <a
+                            class="nav-link"
+                            href="{{ url_for('admin.vocabularies.alphabets.index') }}"
+                            >Abjad</a
+                        >
+                    </li>
+
+                    <li
+                        class="{{ 'active' if request.path.split('/')[3] == 'affixes' else '' }}"
+                    >
+                        <a
+                            class="nav-link"
+                            href="{{ url_for('admin.vocabularies.affixes.index') }}"
+                            >Imbuhan</a
+                        >
+                    </li>
+
+                    <li
+                        class="{{ 'active' if request.path.split('/')[3] == 'numbers' else '' }}"
+                    >
+                        <a
+                            class="nav-link"
+                            href="{{ url_for('admin.vocabularies.numbers.index') }}"
+                            >Angka</a
+                        >
+                    </li>
+                </ul>
             </li>
         </ul>
     </aside>

@@ -1,0 +1,160 @@
+<!-- Add Alphabet Modal -->
+<div
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    id="addAlphabetModal"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Tambah {{ title }}</h5>
+                <button
+                    type="button"
+                    class="close text-white"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                >
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form
+                id="formAddAlphabet"
+                method="post"
+                enctype="multipart/form-data"
+            >
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name">Nama</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="name"
+                            id="name"
+                            placeholder="Masukan Nama Kamus"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Deskripsi</label>
+                        <textarea
+                            placeholder="Masukan Deskripsi"
+                            name="description"
+                            id="description"
+                            class="form-control"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Image</label>
+                        <input
+                            type="file"
+                            class="dropify"
+                            name="image"
+                            id="image"
+                        />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-dark"
+                        data-dismiss="modal"
+                    >
+                        Close
+                    </button>
+                    <button
+                        type="button"
+                        id="btnSubmitAlphabet"
+                        class="btn btn-primary"
+                    >
+                        <i class="fa fa-save"></i> Simpan Data
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Alphabet Modal -->
+<div
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    id="editAlphabetModal"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Edit {{ title }}</h5>
+                <button
+                    type="button"
+                    class="close text-white"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                >
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form
+                id="formEditAlphabet"
+                method="post"
+                enctype="multipart/form-data"
+            >
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name">Nama</label>
+                        <input type="hidden" id="updateId" />
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="name"
+                            id="nameEdit"
+                            placeholder="Masukan Nama Kamus"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Deskripsi</label>
+                        <textarea
+                            placeholder="Masukan Deskripsi"
+                            name="description"
+                            id="descriptionEdit"
+                            class="form-control"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Image</label>
+                        <input
+                            type="file"
+                            class=""
+                            name="image"
+                            id="imageEdit"
+                        />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-dark"
+                        data-dismiss="modal"
+                    >
+                        Close
+                    </button>
+                    <button
+                        type="button"
+                        id="btnEditAlphabet"
+                        class="btn btn-primary"
+                    >
+                        <i class="fa fa-save"></i> Simpan Data
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

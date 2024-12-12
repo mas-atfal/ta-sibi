@@ -1,7 +1,7 @@
 from flask import render_template
 from src.app.Http.Controllers.Controller import Controller
 
-from ....Models.Dictionary import Dictionary
+from ....Models.Alphabet import Alphabet
 from ....Models.Article import Article
 
 class HomeController(Controller):
@@ -12,7 +12,7 @@ class HomeController(Controller):
             "": "#"
         }
         
-        dictionaries = Dictionary.query.limit(6).all()
+        alphabets = Alphabet.query.limit(6).all()
         articles = Article.query.limit(6).all()
         
-        return render_template("frontend/home/index.html", title=title, sub_title=sub_title, dictionaries=dictionaries, articles=articles)
+        return render_template("frontend/home/index.html", title=title, sub_title=sub_title, alphabets=alphabets, articles=articles)

@@ -1,8 +1,8 @@
 from ...config.database import db, BaseModel
 from flask import url_for
 
-class Dictionary(BaseModel):
-    __tablename__ = 'dictionaries'
+class Alphabet(BaseModel):
+    __tablename__ = 'alphabets'
 
     name = db.Column(db.String(255), nullable=False)
     slug_name = db.Column(db.String(255), nullable=False)

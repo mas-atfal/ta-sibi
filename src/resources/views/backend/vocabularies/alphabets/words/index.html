@@ -9,9 +9,18 @@
         <div class="card-header">
             <button
                 type="button"
+                class="btn btn-dark mr-2"
+                onclick="history.back()"
+            >
+                <i class="fa fa-arrow-circle-left me-0"></i>
+                Kembali
+            </button>
+
+            <button
+                type="button"
                 class="btn btn-primary"
                 data-toggle="modal"
-                data-target="#addDictionaryModal"
+                data-target="#addWordModal"
             >
                 <i class="fa fa-plus-circle me-0"></i> Tambah {{ title }}
             </button>
@@ -19,45 +28,39 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table
-                    id="dictionaries"
+                    id="words"
                     style="width: 98%"
                     class="table table-striped table-bordered dataTable"
                 >
                     <thead>
                         <th width="30">No</th>
-                        <th width="100">Gambar</th>
                         <th>Nama</th>
+                        <th>Link Video</th>
                         <th width="150">Action</th>
                     </thead>
 
                     <tbody>
-                        {% for dictionary in dictionaries %}
+                        {% for word in words %}
                         <tr>
                             <td>{{ loop.index }}</td>
-                            <td>
-                                <img
-                                    src="{{ url_for('static', filename='storage/dictionaries/' + dictionary.image) }}"
-                                    width="100"
-                                    alt=""
-                                />
-                            </td>
-                            <td>{{ dictionary.name }}</td>
+                            <td>{{ word.name }}</td>
+                            <td>{{ word.video_link }}</td>
                             <td class="text-center">
                                 <button
                                     type="button"
-                                    data-id="{{ dictionary.id }}"
+                                    data-id="{{ word.id }}"
                                     class="btn btn-success btn-sm"
                                     data-toggle="modal"
-                                    data-target="#editDictionaryModal"
+                                    data-target="#editWordModal"
                                 >
                                     <i class="fa fa-edit me-0"></i> Edit
                                 </button>
 
                                 <button
                                     type="button"
-                                    class="btn btn-danger btn-sm btnDeleteDictionary"
-                                    data-name="{{ dictionary.name }}"
-                                    data-id="{{ dictionary.id }}"
+                                    class="btn btn-danger btn-sm btnDeleteWord"
+                                    data-name="{{ word.name }}"
+                                    data-id="{{ word.id }}"
                                 >
                                     <i class="fa fa-trash me-0"></i> Hapus
                                 </button>
@@ -77,39 +80,37 @@
 {% block scripts %}
 
 <!-- Modal -->
-{% include 'backend/dictionaries/m_dictionary.html' %}
+{% include 'backend/vocabularies/alphabets/words/m_word.html' %}
 
 <script>
     $(document).ready(function () {
-        $("#dictionaries").DataTable();
+        $("#words").DataTable();
 
-        $("#btnSubmitDictionary").click(function (e) {
+        $("#btnSubmitWord").click(function (e) {
             e.preventDefault();
             var btnSubmit = $(this);
 
             btnSubmit.attr("disabled", true);
 
             $.ajax({
-                url: "{{ url_for('admin.dictionaries.store') }}",
+                url: "{{ url_for('admin.vocabularies.alphabets.words.store') }}",
                 type: "POST",
                 contentType: false,
                 cache: false,
                 processData: false,
-                data: new FormData($("#formAddDictionary")[0]),
+                data: new FormData($("#formAddWord")[0]),
                 success: function (res) {
                     if (res.status) {
-                        $("#addDictionaryModal").modal("hide");
+                        $("#addWordModal").modal("hide");
                         Swal.fire({
-                            title : "Success",
-                                    text :res.message,
-                                    icon : "success",
-                                    showConfirmButton: false,
-                                    timer: 1500
-                        }).then(
-                            () => {
-                                location.reload();
-                            }
-                        );
+                            title: "Success",
+                            text: res.message,
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        }).then(() => {
+                            location.reload();
+                        });
                     } else {
                         btnSubmit.attr("disabled", false);
                         Swal.fire("failed", res.message, "error");
@@ -124,7 +125,7 @@
         });
 
         // Show Edit Modal
-        $("#editDictionaryModal").on("show.bs.modal", function (e) {
+        $("#editWordModal").on("show.bs.modal", function (e) {
             var id = $(e.relatedTarget).data("id");
             var url = "show/" + id;
 
@@ -132,15 +133,13 @@
                 if (res.status) {
                     $("#updateId").val(res.data.id);
                     $("#nameEdit").val(res.data.name);
-                    $("#descriptionEdit").val(res.data.description);
-                    $("#imageEdit").attr("data-default-file", res.data.image);
-                    $("#imageEdit").dropify();
+                    $("#videoLinkEdit").val(res.data.video_link);
                 }
             });
         });
 
         // Submit Edit Modal
-        $("#btnEditDictionary").click(function (e) {
+        $("#btnEditWord").click(function (e) {
             e.preventDefault();
             var btnSubmit = $(this);
 
@@ -153,21 +152,19 @@
                 contentType: false,
                 cache: false,
                 processData: false,
-                data: new FormData($("#formEditDictionary")[0]),
+                data: new FormData($("#formEditWord")[0]),
                 success: function (res) {
                     if (res.status) {
-                        $("#editDictionaryModal").modal("hide");
+                        $("#editWordModal").modal("hide");
                         Swal.fire({
-                            title : "Success",
-                                    text :res.message,
-                                    icon : "success",
-                                    showConfirmButton: false,
-                                    timer: 1500
-                        }).then(
-                            () => {
-                                location.reload();
-                            }
-                        );
+                            title: "Success",
+                            text: res.message,
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        }).then(() => {
+                            location.reload();
+                        });
                     } else {
                         btnSubmit.attr("disabled", false);
                         Swal.fire("failed", res.message, "error");
@@ -182,7 +179,7 @@
         });
 
         // Delete
-        $(".btnDeleteDictionary").click(function (e) {
+        $(".btnDeleteWord").click(function (e) {
             e.preventDefault();
             var id = $(this).data("id");
             var name = $(this).data("name");
@@ -202,11 +199,11 @@
                         success: function (res) {
                             if (res.status) {
                                 Swal.fire({
-                                    title : "Success",
-                                    text :res.message,
-                                    icon : "success",
+                                    title: "Success",
+                                    text: res.message,
+                                    icon: "success",
                                     showConfirmButton: false,
-                                    timer: 1500
+                                    timer: 1500,
                                 }).then(() => {
                                     location.reload();
                                 });

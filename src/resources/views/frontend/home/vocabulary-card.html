@@ -1,0 +1,45 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h4>Kamus Bahasa Isyarat</h4>
+                <p>
+                    Temukan berbagai huruf abjad dalam bahasa isyarat tangan.
+                    Kamus kami mencakup huruf abjad yang dapat dipraktekan
+                    secara realtime dengan kecerdasan buatan
+                </p>
+            </div>
+
+            <div class="col-md-12">
+                <div
+                    class="gallery gallery-md"
+                    style="
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                    "
+                >
+                    <!-- Item -->
+                    {% for alphabet in alphabets %}
+                    <div
+                        class="gallery-item"
+                        data-image="{{ url_for('static', filename='storage/alphabets/' + alphabet.image) }}"
+                        data-title="{{ alphabet.description }}"
+                        href="{{ url_for('static', filename='storage/alphabets/' + alphabet.image) }}"
+                        title="{{ alphabet.description }}"
+                        style="background-image: url({{ url_for('static', filename='storage/alphabets/' + alphabet.image) }});"
+                    ></div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-md-12 text-center mt-3">
+                <a
+                    href="{{ url_for('web.vocabularies.index') }}"
+                    class="btn btn-primary btn-lg"
+                    >Lihat Selengkapnya</a
+                >
+            </div>
+        </div>
+    </div>
+</div>
