@@ -1,0 +1,68 @@
+{% extends 'frontend/layouts/app.html' %}
+
+<!-- Block Content -->
+{% block content %}
+
+<!-- Block Styles -->
+{% block styles %}
+
+<style>
+    .gallery.gallery-md .gallery-item {
+        width: 150px;
+        height: 150px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+</style>
+
+{% endblock %}
+
+<!-- Content -->
+<div class="section-body">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h4>Kamus Bahasa Isyarat</h4>
+                    <p>
+                        Temukan berbagai huruf abjad dalam bahasa isyarat
+                        tangan. Kamus kami mencakup huruf abjad yang dapat
+                        dipraktekan secara realtime dengan kecerdasan buatan
+                    </p>
+                </div>
+
+                <!-- Item -->
+                {% for alphabet in alphabets %}
+                <div class="col-md-2">
+                    <a href="{{ url_for('web.vocabularies.words', id=alphabet.id) }}">
+                        <div class="card" style="min-height: 150px;">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <img
+                                        class=""
+                                        src="{{ url_for('static', filename='storage/alphabets/' + alphabet.image) }}"
+                                        width="100%"
+                                        alt=""
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <!-- <div
+                            class="gallery-item"
+                            data-image="{{ url_for('static', filename='storage/alphabets/' + alphabet.image) }}"
+                            data-title="{{ alphabet.description }}"
+                            href="{{ url_for('static', filename='storage/alphabets/' + alphabet.image) }}"
+                            title="{{ alphabet.description }}"
+                            style="background-image: url({{ url_for('static', filename='storage/alphabets/' + alphabet.image) }});"
+                        ></div> -->
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+</div>

@@ -39,13 +39,18 @@ from flask import Blueprint
 from flask_login import login_required
 
 from ..app.Http.Controllers.Frontend.HomeController import HomeController as FrontendHomeController
+
 from ..app.Http.Controllers.Frontend.Vocabulary.VocabularyController import VocabularyController as FrontendVocabularyController
+from ..app.Http.Controllers.Frontend.Vocabulary.AlphabetController import AlphabetController as FrontendAlphabetController
+from ..app.Http.Controllers.Frontend.Vocabulary.AffixController import AffixController as FrontendAffixController
+
 from ..app.Http.Controllers.Frontend.ArticleController import ArticleController as FrontendArticleController
 from ..app.Http.Controllers.Frontend.LearningController import LearningController as FrontendLearningController
 from ..app.Http.Controllers.Frontend.AboutController import AboutController as FrontendAboutController
 
 from ..app.Http.Controllers.Backend.HomeController import HomeController
 from ..app.Http.Controllers.Backend.CategoryController import CategoryController
+from ..app.Http.Controllers.Backend.SingkatanController import SingkatanController
 from ..app.Http.Controllers.Backend.ArticleController import ArticleController
 from ..app.Http.Controllers.Backend.Vocabulary.AlphabetController import AlphabetController
 from ..app.Http.Controllers.Backend.Vocabulary.WordController import WordController
@@ -66,6 +71,7 @@ bpAuth = Blueprint("auth", __name__, url_prefix='/auth')
 bpAdmin = Blueprint("admin", __name__, url_prefix='/admin')
 bpAdminArticles = Blueprint("articles", __name__, url_prefix='/articles')
 bpAdminCategories = Blueprint("categories", __name__, url_prefix='/categories')
+bpAdminSingkatan = Blueprint("singkatan", __name__, url_prefix='/singkatan')
 
 # Admin Vocabularies
 bpAdminVocabularies = Blueprint("vocabularies", __name__, url_prefix='/vocabularies')
@@ -80,6 +86,7 @@ bpWeb.register_blueprint(bpWebLearning)
 bpWeb.register_blueprint(bpWebAbout)
 
 bpAdmin.register_blueprint(bpAdminCategories)
+bpAdmin.register_blueprint(bpAdminSingkatan)
 bpAdmin.register_blueprint(bpAdminArticles)
 bpAdmin.register_blueprint(bpAdminVocabularies)
 
@@ -96,6 +103,18 @@ def index():
 @bpWebVocabulary.route("/")
 def index():
     return FrontendVocabularyController.index()
+
+@bpWebVocabulary.route("/alphabets", methods=["GET"])
+def alphabets():
+    return FrontendAlphabetController.index()
+
+@bpWebVocabulary.route("/alphabets/words/<int:id>", methods=["GET"])
+def words(id):
+    return FrontendAlphabetController.show(id)
+
+@bpWebVocabulary.route("/affixes", methods=["GET"])
+def affixes():
+    return FrontendAffixController.index()
 
 @bpWebLearning.route("/")
 def index():
@@ -176,6 +195,11 @@ def update(id):
 @bpAdminCategories.route("/destroy/<int:id>", methods=["DELETE"])
 def destroy(id):
     return CategoryController.destroy(id)
+
+# Admin Singkatan Routes
+@bpAdminSingkatan.route("/", methods=["GET"])
+def index():
+    return SingkatanController.index()
 
 # Admin Articles Routes
 @bpAdminArticles.route("/", methods=["GET"])
