@@ -201,6 +201,22 @@ def destroy(id):
 def index():
     return SingkatanController.index()
 
+@bpAdminSingkatan.route("/store", methods=["POST"])
+def store():
+    return SingkatanController.store()
+
+@bpAdminSingkatan.route("/show/<int:id>", methods=["GET"])
+def show(id):
+    return SingkatanController.show(id)
+
+@bpAdminSingkatan.route("/update/<int:id>", methods=["PATCH"])
+def update(id):
+    return SingkatanController.update(id)
+
+@bpAdminSingkatan.route("/destroy/<int:id>", methods=["DELETE"])
+def destroy(id):
+    return SingkatanController.destroy(id)
+
 # Admin Articles Routes
 @bpAdminArticles.route("/", methods=["GET"])
 def index():

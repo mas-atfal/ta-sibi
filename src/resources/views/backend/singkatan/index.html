@@ -4,5 +4,228 @@
 {% block content %}
 
 <!-- Content -->
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <button
+                type="button"
+                class="btn btn-dark mr-2"
+                onclick="history.back()"
+            >
+                <i class="fa fa-arrow-circle-left me-0"></i>
+                Kembali
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#addSingkatanModal"
+            >
+                <i class="fa fa-plus-circle me-0"></i> Tambah {{ title }}
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table
+                    id="singkatans"
+                    style="width: 98%"
+                    class="table table-striped table-bordered dataTable"
+                >
+                    <thead>
+                        <th width="30">No</th>
+                        <th>Singkatan</th>
+                        <th>Kepanjangan</th>
+                        <th width="150">Action</th>
+                    </thead>
+
+                    <tbody>
+                        {% for singkatan in singkatans %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ singkatan.singkatan }}</td>
+                            <td>{{ singkatan.kepanjangan }}</td>
+                            <td class="text-center">
+                                <button
+                                    type="button"
+                                    data-id="{{ singkatan.id }}"
+                                    class="btn btn-success btn-sm"
+                                    data-toggle="modal"
+                                    data-target="#editSingkatanModal"
+                                >
+                                    <i class="fa fa-edit me-0"></i> Edit
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-danger btn-sm btnDeleteSingkatan"
+                                    data-name="{{ singkatan.singkatan }}"
+                                    data-id="{{ singkatan.id }}"
+                                >
+                                    <i class="fa fa-trash me-0"></i> Hapus
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Content -->
+{% endblock %}
+
+<!-- Scripts -->
+{% block scripts %}
+
+<!-- Modal -->
+{% include 'backend/singkatan/m_singkatan.html' %}
+
+<script>
+    $(document).ready(function () {
+        $("#singkatans").DataTable();
+
+        $("#btnSubmitSingkatan").click(function (e) {
+            e.preventDefault();
+            var btnSubmit = $(this);
+
+            btnSubmit.attr("disabled", true);
+
+            $.ajax({
+                url: "{{ url_for('admin.singkatan.store') }}",
+                type: "POST",
+                contentType: false,
+                cache: false,
+                processData: false,
+                data: new FormData($("#formAddSingkatan")[0]),
+                success: function (res) {
+                    if (res.status) {
+                        $("#addSingkatanModal").modal("hide");
+                        Swal.fire({
+                            title: "Success",
+                            text: res.message,
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        btnSubmit.attr("disabled", false);
+                        Swal.fire("failed", res.message, "error");
+                        console.log(res.message);
+                    }
+                },
+                error: function (err) {
+                    btnSubmit.attr("disabled", false);
+                    console.log(err);
+                },
+            });
+        });
+
+        // Show Edit Modal
+        $("#editSingkatanModal").on("show.bs.modal", function (e) {
+            var id = $(e.relatedTarget).data("id");
+            var url = "show/" + id;
+
+            $.get(url, function (res) {
+                if (res.status) {
+                    $("#updateId").val(res.data.id);
+                    $("#singkatanEdit").val(res.data.singkatan);
+                    $("#kepanjanganEdit").val(res.data.kepanjangan);
+                }
+            });
+        });
+
+        // Submit Edit Modal
+        $("#btnEditSingkatan").click(function (e) {
+            e.preventDefault();
+            var btnSubmit = $(this);
+
+            btnSubmit.attr("disabled", true);
+            var id = $("#updateId").val();
+
+            $.ajax({
+                url: "update/" + id,
+                type: "PATCH",
+                contentType: false,
+                cache: false,
+                processData: false,
+                data: new FormData($("#formEditSingkatan")[0]),
+                success: function (res) {
+                    if (res.status) {
+                        $("#editSingkatanModal").modal("hide");
+                        Swal.fire({
+                            title: "Success",
+                            text: res.message,
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        btnSubmit.attr("disabled", false);
+                        Swal.fire("failed", res.message, "error");
+                        console.log(res.message);
+                    }
+                },
+                error: function (err) {
+                    btnSubmit.attr("disabled", false);
+                    console.log(err);
+                },
+            });
+        });
+
+        // Delete
+        $(".btnDeleteSingkatan").click(function (e) {
+            e.preventDefault();
+            var id = $(this).data("id");
+            var name = $(this).data("name");
+            Swal.fire({
+                title: "Apa anda yakin ?",
+                text: "Anda akan menghapus Singkatan " + name + " ini",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "destroy/" + id,
+                        type: "DELETE",
+                        success: function (res) {
+                            if (res.status) {
+                                Swal.fire({
+                                    title: "Success",
+                                    text: res.message,
+                                    icon: "success",
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire("failed", res.message, "error");
+                                console.log(res.message);
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        },
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Cancelled",
+                        text: "Singkatan Anda tidak dihapus :)",
+                        icon: "error",
+                    });
+                }
+            });
+        });
+    });
+</script>
 
 {% endblock %}
