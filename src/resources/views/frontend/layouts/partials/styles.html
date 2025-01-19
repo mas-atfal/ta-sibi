@@ -31,3 +31,19 @@
     rel="stylesheet"
     href="{{ url_for('static', filename='templates/css/components.css') }}"
 />
+
+<style>
+    .video-overlay {
+        position: absolute;
+        top: 20px;
+        left: 30px;
+        background: black;
+        color: white;
+        padding: 5px 10px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        font-weight: bold;
+        border-radius: 3px;
+        z-index: 10; /* Ensure it appears above the video */
+    }
+</style>

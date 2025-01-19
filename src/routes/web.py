@@ -43,6 +43,7 @@ from ..app.Http.Controllers.Frontend.HomeController import HomeController as Fro
 from ..app.Http.Controllers.Frontend.Vocabulary.VocabularyController import VocabularyController as FrontendVocabularyController
 from ..app.Http.Controllers.Frontend.Vocabulary.AlphabetController import AlphabetController as FrontendAlphabetController
 from ..app.Http.Controllers.Frontend.Vocabulary.AffixController import AffixController as FrontendAffixController
+from ..app.Http.Controllers.Frontend.Vocabulary.NumberController import NumberController as FrontendNumberController
 
 from ..app.Http.Controllers.Frontend.ArticleController import ArticleController as FrontendArticleController
 from ..app.Http.Controllers.Frontend.LearningController import LearningController as FrontendLearningController
@@ -115,6 +116,10 @@ def words(id):
 @bpWebVocabulary.route("/affixes", methods=["GET"])
 def affixes():
     return FrontendAffixController.index()
+
+@bpWebVocabulary.route("/numbers", methods=["GET"])
+def numbers():
+    return FrontendNumberController.index()
 
 @bpWebLearning.route("/")
 def index():

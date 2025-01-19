@@ -1,0 +1,52 @@
+{% extends 'frontend/layouts/app.html' %}
+
+<!-- Block Content -->
+{% block content %}
+
+<!-- Block Styles -->
+{% block styles %}
+
+<style></style>
+
+{% endblock %}
+
+<!-- Content -->
+<div class="section-body">
+    <div class="card">
+        <div class="card-header">
+            <button class="btn btn-dark" onclick="history.back()">
+                <i class="fa fa-arrow-circle-left me-0"></i> Kembali
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- <div class="col-md-12 text-center">
+                    <h4>Kamus Bahasa Isyarat</h4>
+                    <p>
+                        Temukan berbagai huruf abjad dalam bahasa isyarat
+                        tangan. Kamus kami mencakup huruf abjad yang dapat
+                        dipraktekan secara realtime dengan kecerdasan buatan
+                    </p>
+                </div> -->
+
+                {% for word in words %}
+                <div class="col-md-4">
+                    <video
+                        id="my-video-1"
+                        class="video-js vjs-default-skin"
+                        controls
+                        preload="auto"
+                        width="350"
+                        height="264"
+                        data-setup='{"techOrder": ["youtube"], "sources": [{"type": "video/youtube", "src": "{{ word.video_link }}"}]}'
+                    ></video>
+
+                    <div class="video-overlay">{{ word.name }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+</div>

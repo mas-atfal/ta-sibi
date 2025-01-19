@@ -13,6 +13,15 @@
         margin-right: 10px;
         margin-bottom: 10px;
     }
+
+    .top-0 {
+        background-color: #000;
+        color: #fff;
+        padding: 5px 10px;
+        font-size: 14px;
+        text-align: center;
+        width: 100%; /* Make it as wide as the image */
+    }
 </style>
 
 {% endblock %}
@@ -20,6 +29,11 @@
 <!-- Content -->
 <div class="section-body">
     <div class="card">
+        <div class="card-header">
+            <button class="btn btn-dark" onclick="history.back()">
+                <i class="fa fa-arrow-circle-left me-0"></i> Kembali
+            </button>
+        </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12 text-center">
@@ -34,32 +48,20 @@
                 <!-- Item -->
                 {% for alphabet in alphabets %}
                 <div class="col-md-2">
-                    <a href="{{ url_for('web.vocabularies.words', id=alphabet.id) }}">
-                        <div class="card" style="min-height: 150px;">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <img
-                                        class=""
-                                        src="{{ url_for('static', filename='storage/alphabets/' + alphabet.image) }}"
-                                        width="100%"
-                                        alt=""
-                                    />
-                                </div>
-                            </div>
+                    <a
+                        href="{{ url_for('web.vocabularies.words', id=alphabet.id) }}"
+                    >
+                        <div class="card">
+                            <div
+                                class="card-body"
+                                style="width: 150px; height: 150px; background-image: url({{ url_for('static', filename='storage/alphabets/' + alphabet.image) }}); background-size: cover; background-position: center; background-repeat: no-repeat;"
+                            ></div>
+
+                            <h4 class="top-0">{{ alphabet.name }}</h4>
                         </div>
                     </a>
-                    
-                    <!-- <div
-                            class="gallery-item"
-                            data-image="{{ url_for('static', filename='storage/alphabets/' + alphabet.image) }}"
-                            data-title="{{ alphabet.description }}"
-                            href="{{ url_for('static', filename='storage/alphabets/' + alphabet.image) }}"
-                            title="{{ alphabet.description }}"
-                            style="background-image: url({{ url_for('static', filename='storage/alphabets/' + alphabet.image) }});"
-                        ></div> -->
-                    </div>
-                    {% endfor %}
                 </div>
+                {% endfor %}
             </div>
         </div>
     </div>

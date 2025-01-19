@@ -26,7 +26,7 @@ class AlphabetController(Controller):
     
     def store():
         try:
-            alphabet = ()
+            alphabet = Alphabet()
             alphabet.name = request.form.get("name")
             alphabet.slug_name = slugify(request.form.get("name"))
             alphabet.description = request.form.get("description")
@@ -59,7 +59,7 @@ class AlphabetController(Controller):
         except Exception as e:
             return jsonify({
                 "status": False,
-                "message": e
+                "message": e.__str__()
             })
             
     def show(id):

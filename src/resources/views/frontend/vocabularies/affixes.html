@@ -20,9 +20,35 @@
 <!-- Content -->
 <div class="section-body">
     <div class="card">
+        <div class="card-header">
+            <button class="btn btn-dark" onclick="history.back()">
+                <i class="fa fa-arrow-circle-left me-0"></i> Kembali
+            </button>
+            <!-- Don't Delete H4 -->
+            <h4></h4>
+            <div class="card-header-action">
+                <div class="btn-group">
+                    <a
+                        href="{{ url_for('web.vocabularies.affixes', type='awalan') }}"
+                        class="btn btn-link {% if request.args.type == 'awalan' %} active {% endif %}"
+                        >Awalan</a
+                    >
+                    <a
+                        href="{{ url_for('web.vocabularies.affixes', type='akhiran') }}"
+                        class="btn btn-link {% if request.args.type == 'akhiran' %} active {% endif %}"
+                        >Akhiran</a
+                    >
+                    <a
+                        href="{{ url_for('web.vocabularies.affixes', type='partikel') }}"
+                        class="btn btn-link {% if request.args.type == 'partikel' %} active {% endif %}"
+                        >Partikel</a
+                    >
+                </div>
+            </div>
+        </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-12 text-center">
+                <!-- <div class="col-md-12 text-center">
                     <h4>Kata Imbuhan</h4>
                     <p>
                         Pelajari penggunaan imbuhan dalam bahasa isyarat tangan
@@ -32,11 +58,11 @@
                         interaktif dan dipraktikkan secara realtime dengan
                         bantuan kecerdasan buatan.
                     </p>
-                </div>
+                </div> -->
 
                 <!-- Item -->
                 {% for affix in affixes %}
-                <div class="col-md-4">
+                <div class="col-md-4 video-container">
                     <video
                         id="my-video-1"
                         class="video-js vjs-default-skin"
@@ -45,17 +71,9 @@
                         width="350"
                         height="264"
                         data-setup='{"techOrder": ["youtube"], "sources": [{"type": "video/youtube", "src": "{{ affix.video_link }}"}]}'
-                    >
-                        <p class="vjs-no-js">
-                            To view this video please enable JavaScript, and
-                            consider upgrading to a web browser that
-                            <a
-                                href="https://videojs.com/html5-video-support/"
-                                target="_blank"
-                                >supports HTML5 video</a
-                            >
-                        </p>
-                    </video>
+                    ></video>
+
+                    <div class="video-overlay">{{ affix.name }}</div>
                 </div>
                 {% endfor %}
             </div>

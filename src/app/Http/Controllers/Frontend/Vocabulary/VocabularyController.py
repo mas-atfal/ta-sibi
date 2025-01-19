@@ -12,7 +12,7 @@ class VocabularyController(Controller):
             "Abjad": "#"
         }
         
-        alphabets = Alphabet.query.all()
+        alphabets = Alphabet.query.limit(6)
         affixes = Affix.query.all()
         numbers = Number.query.all()
         

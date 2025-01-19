@@ -20,5 +20,5 @@ class Alphabet(BaseModel):
             'id': self.id,
             'name': self.name,
             'description': self.description,
-            'image': url_for('static', filename='storage/dictionaries/'+self.image)
+            'image': url_for('static', filename='storage/alphabets/'+self.image)
         }

@@ -17,30 +17,22 @@
             {% for affix in affixes %}
             <div class="col-md-4">
                 <video
-                    id="my-video-1"
+                    id="affix-video-{{ affix.id }}"
                     class="video-js vjs-default-skin"
                     controls
                     preload="auto"
                     width="350"
                     height="264"
                     data-setup='{"techOrder": ["youtube"], "sources": [{"type": "video/youtube", "src": "{{ affix.video_link }}"}]}'
-                >
-                    <p class="vjs-no-js">
-                        To view this video please enable JavaScript, and
-                        consider upgrading to a web browser that
-                        <a
-                            href="https://videojs.com/html5-video-support/"
-                            target="_blank"
-                            >supports HTML5 video</a
-                        >
-                    </p>
-                </video>
+                ></video>
+
+                <div class="video-overlay">{{ affix.name }}</div>
             </div>
             {% endfor %}
 
             <div class="col-md-12 mt-2 text-center">
                 <a
-                    href="{{ url_for('web.vocabularies.affixes') }}"
+                    href="{{ url_for('web.vocabularies.affixes', type='awalan') }}"
                     class="btn btn-primary btn-md"
                     >Lihat Selengkapnya</a
                 >

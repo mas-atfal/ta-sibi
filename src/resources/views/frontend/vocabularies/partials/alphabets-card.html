@@ -10,30 +10,24 @@
                 </p>
             </div>
 
-            <div class="col-md-12">
-                <div
-                    class="gallery gallery-md"
-                    style="
-                        display: flex;
-                        flex-wrap: wrap;
-                        justify-content: center;
-                    "
+            {% for alphabet in alphabets %}
+            <div class="col-md-2">
+                <a
+                    href="{{ url_for('web.vocabularies.words', id=alphabet.id) }}"
                 >
-                    <!-- Item -->
-                    {% for alphabet in alphabets %}
-                    <div
-                        class="gallery-item"
-                        data-image="{{ url_for('static', filename='storage/alphabets/' + alphabet.image) }}"
-                        data-title="{{ alphabet.description }}"
-                        href="{{ url_for('static', filename='storage/alphabets/' + alphabet.image) }}"
-                        title="{{ alphabet.description }}"
-                        style="background-image: url({{ url_for('static', filename='storage/alphabets/' + alphabet.image) }});"
-                    ></div>
-                    {% endfor %}
-                </div>
-            </div>
+                    <div class="card">
+                        <div
+                            class="card-body text-center"
+                            style="width: 150px; height: 150px; background-image: url({{ url_for('static', filename='storage/alphabets/' + alphabet.image) }}); background-size: cover; background-position: center;"
+                        ></div>
 
-            <div class="col-md-12 mt-2 text-center">
+                        <h4 class="top-0">{{ alphabet.name }}</h4>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+
+            <div class="col-md-12 text-center">
                 <a
                     href="{{ url_for('web.vocabularies.alphabets') }}"
                     class="btn btn-primary btn-md"
