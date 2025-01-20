@@ -213,13 +213,18 @@
                     if (!predictionWordsDisplayElement.innerHTML.endsWith('<br>')) {
                         words = predictionWordsDisplayElement.innerHTML.split('<br>')
                         lastword = words[words.length - 1]
-                        let singkatans = get_singkatan()
+                        let singkatans = await getSingkatan(lastword.trim())
                         let kepanjangan = ""
-                        for (let index = 0; index < singkatans.length; index++) {
-                            if (lastword.includes(singkatans[index]["singkatan"])) {
-                                kepanjangan = singkatans[index]["kepanjangan"]
-                            }
+                        if (singkatans.status == true) {
+                            kepanjangan = lastword + " => " + singkatans.data[0]['kepanjangan']
+                        } else {
+                            kepanjangan = lastword + " => " + singkatans.message
                         }
+                        // for (let index = 0; index < singkatans.length; index++) {
+                        //     if (lastword.includes(singkatans[index]["singkatan"])) {
+                        //         kepanjangan = singkatans[index]["kepanjangan"]
+                        //     }
+                        // }
                         if (kepanjangan == "") {
                             kepanjangan = lastword
                         }
