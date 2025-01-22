@@ -202,9 +202,11 @@
             // Draw hand lines
             drawHand(hand, canvasCtx)
             if (resultDetection != undefined) {
-                predictionDisplayElement.innerHTML = resultDetection.name
-                predictCatch(predictionWordsDisplayElement, resultDetection.name)
-                statusDisplayElement.innerHTML = "prediksi"
+                if (resultDetection.name != fp.Gestures.ThumbsUpGesture.name) {
+                    predictionDisplayElement.innerHTML = resultDetection.name
+                    predictCatch(predictionWordsDisplayElement, resultDetection.name)
+                    statusDisplayElement.innerHTML = "prediksi"
+                }
             } else {
                 if (misPredict > 20 || resultDetection == fp.Gestures.ThumbsUpGesture.name) {
                     misPredict = 0
