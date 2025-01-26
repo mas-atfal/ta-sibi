@@ -218,10 +218,12 @@
                         let singkatans = await getSingkatan(lastword.trim())
                         let kepanjangan = ""
                         if (singkatans.status == true) {
-                            kepanjangan = lastword + " => " + singkatans.data[0]['kepanjangan']
-                        } else {
-                            kepanjangan = lastword + " => " + singkatans.message
-                        }
+                            // kepanjangan = lastword + " => " + singkatans.data[0]['kepanjangan']
+                            kepanjangan = singkatans.data[0]['kepanjangan']
+                        } 
+                        // else {
+                        //     kepanjangan = lastword + " => " + singkatans.message
+                        // }
                         // for (let index = 0; index < singkatans.length; index++) {
                         //     if (lastword.includes(singkatans[index]["singkatan"])) {
                         //         kepanjangan = singkatans[index]["kepanjangan"]
@@ -263,7 +265,8 @@
     function predictCatch(e, s) {
         if (predictingStat) {
             startPredictingCount++
-            if (startPredictingCount > 10) {
+            // if (startPredictingCount > 10) {
+            if (startPredictingCount > 17) {
                 appendText(e, s)
                 startPredictingCount = 0
             }
